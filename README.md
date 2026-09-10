@@ -23,3 +23,4 @@ skills/
 | --- | --- | --- | --- |
 | 思维棱镜 thought-prism | 把一个想法折射成多学科认知光谱，提供多角度写作建议 | [vickysy/thought-prism-skill](https://github.com/vickysy/thought-prism-skill) | Proprietary |
 | 达尔文 darwin-skill | Skill 自动优化器：9 维评分 + 爬山迭代 + 盲评验证 | [alchaincyf/darwin-skill](https://github.com/alchaincyf/darwin-skill) | MIT |
+| 仓颉 cangjie-skill | 把书、长视频、播客等高价值内容蒸馏成可执行的 Agent Skills | [kangarooking/cangjie-skill](https://github.com/kangarooking/cangjie-skill) | MIT |
