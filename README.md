@@ -15,4 +15,4 @@ skills/
 
 | 技能 | 说明 | 来源 |
 | --- | --- | --- |
-| [preview-lesson](skills/preview-lesson/SKILL.md) | 按教材版本、年级学期、课次生成一页 A4 提问式预习单 | 自 `preview-lesson-skills` 仓库迁入（以本地安装的 v1.1.0 为准） |
+| [preview-lesson](skills/preview-lesson/SKILL.md) | 按教材版本、年级学期、课次生成一页 A4 提问式预习单 | 本地仓库 |
