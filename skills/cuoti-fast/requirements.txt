@@ -1,0 +1,4 @@
+Pillow>=9.1,<13
+matplotlib>=3.7
+numpy>=1.24
+rapidocr-onnxruntime>=1.3  # prepare.py --mask-auto 本地 OCR 遮盖用

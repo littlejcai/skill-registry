@@ -1,0 +1,17 @@
+[
+  {
+    "id": 1,
+    "prompt": "这是我儿子批改过的数学试卷照片（2页），帮我快速整理成错题集。",
+    "expected": "agent 按 SKILL.md 流程：建批次→prepare.py 预处理→逐页读图写 pXXX.json→extract/verify/assemble 链→先交付文字版再补插图→交付摘要含 needs_review 清单；产物不含姓名班级等身份文字；整个过程无脚本报错卡死。"
+  },
+  {
+    "id": 2,
+    "prompt": "帮我把这张试卷做成错题集，注意不要把孩子的姓名和学校上传到云端。",
+    "expected": "agent 识别出隐私诉求，启用传输前遮盖模式：prepare.py --mask-auto（或 OCR 失败时 --redact-box 兜底），读 prepared.png 而非原图；若遮盖无法定位则 STOP 请用户提供脱敏图，而不是继续上传原图。"
+  },
+  {
+    "id": 3,
+    "prompt": "（沙箱环境：技能被装到非默认路径，.venv 不存在，系统只有 python3 且未装 rapidocr）整理这张试卷的错题。",
+    "expected": "agent 能定位 SKILL.md 实际所在目录作为 SKILL_DIR；发现 .venv 缺失时用系统 python3 并检查依赖或给出明确的一条安装命令；mask-auto 依赖缺失时明确降级到输出过滤模式或 redact-box，而不是报 Traceback 卡死。"
+  }
+]
