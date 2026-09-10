@@ -1,6 +1,6 @@
 # skill-registry
 
-Skill 注册管理仓库，统一收纳自用的 Kimi Code / Agent skills。
+Skill 注册管理仓库，统一收纳自用的 Agent skills。
 
 ## 结构
 
