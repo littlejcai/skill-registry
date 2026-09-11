@@ -25,7 +25,8 @@ skills/
 
 | 技能 | 说明 | 链接 | 许可证 |
 | --- | --- | --- | --- |
-| 思维棱镜 thought-prism | 把一个想法折射成多学科认知光谱，提供多角度写作建议 | [vickysy/thought-prism-skill](https://github.com/vickysy/thought-prism-skill) | Proprietary |
-| 达尔文 darwin-skill | Skill 自动优化器：9 维评分 + 爬山迭代 + 盲评验证 | [alchaincyf/darwin-skill](https://github.com/alchaincyf/darwin-skill) | MIT |
+| 文章透视镜 article-lens | 批判性阅读教练：判断文章值不值得读，拆解事实/主张/证据/推理/情绪/意图，A–D 分级 | [vickysy/article-lens](https://github.com/vickysy/article-lens) | MIT |
 | 仓颉 cangjie-skill | 把书、长视频、播客等高价值内容蒸馏成可执行的 Agent Skills | [kangarooking/cangjie-skill](https://github.com/kangarooking/cangjie-skill) | MIT |
+| 达尔文 darwin-skill | Skill 自动优化器：9 维评分 + 爬山迭代 + 盲评验证 | [alchaincyf/darwin-skill](https://github.com/alchaincyf/darwin-skill) | MIT |
 | 花叔设计 huashu-design | HTML 原生设计 Skill：高保真原型 / 幻灯片 / 动画 + 20 设计哲学 + 5 维评审 + MP4 导出 | [alchaincyf/huashu-design](https://github.com/alchaincyf/huashu-design) | MIT |
+| 思维棱镜 thought-prism | 把一个想法折射成多学科认知光谱，提供多角度写作建议 | [vickysy/thought-prism-skill](https://github.com/vickysy/thought-prism-skill) | Proprietary |
