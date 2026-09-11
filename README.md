@@ -20,7 +20,6 @@ skills/
 | [visual-explain](skills/visual-explain/SKILL.md) | 把小学数学题或抽象概念变成"看图就懂"的可视化讲解（线段图/分物图/方格面积等），产出自包含 Markdown | 本仓库 |
 | [diagnose-quiz](skills/diagnose-quiz/SKILL.md) | 错题四类归因记入学习档案，针对弱点生成带机器验证的变式练习卷并自动判题 | 本仓库 |
 | [cuoti-fast](skills/cuoti-fast/SKILL.md) | 从批改过的试卷照片一次读页识别错题，批量重绘插图，几分钟内产出自包含 Markdown 错题集 | 本仓库 |
-| [textbook-map](skills/textbook-map/SKILL.md) | 把教材 PDF 拆成知识点结构并匹配课标标准层（稳定ID映射+悬空校验），生成 Obsidian 双链知识图谱 | 本仓库 |
 
 ## 收录的外部技能（仅链接，不复制源码）
 
