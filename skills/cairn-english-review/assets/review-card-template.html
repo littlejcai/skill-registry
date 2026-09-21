@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>英语复盘卡片</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: #f5f1ea;
+    padding: 24px 16px;
+    color: #2d2d2d;
+    -webkit-font-smoothing: antialiased;
+  }
+  .card {
+    max-width: 420px;
+    margin: 0 auto;
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 32px 26px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.06);
+  }
+
+  /* 顶部标题 */
+  .header {
+    text-align: center;
+    margin-bottom: 28px;
+  }
+  .header .tag {
+    display: inline-block;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: #2e7d5b;
+    background: #e8f3ee;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 14px;
+    font-weight: 600;
+  }
+  .header h1 {
+    font-size: 24px;
+    line-height: 1.35;
+    font-weight: 700;
+    color: #1a1a1a;
+  }
+  .header h1 .num {
+    color: #2e7d5b;
+  }
+  .header .sub {
+    font-size: 13px;
+    color: #888;
+    margin-top: 10px;
+  }
+
+  /* 区块标题 */
+  .section-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 28px 0 14px;
+    padding-left: 10px;
+    border-left: 3px solid #2e7d5b;
+  }
+
+  /* 问题分布 */
+  .stats { display: flex; flex-direction: column; gap: 10px; }
+  .stat-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12.5px;
+  }
+  .stat-label { width: 64px; color: #555; flex-shrink: 0; }
+  .stat-bar {
+    flex: 1;
+    height: 8px;
+    background: #f0ede6;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .stat-fill {
+    height: 100%;
+    background: #2e7d5b;
+    border-radius: 4px;
+  }
+  .stat-fill.orange { background: #e8915a; }
+  .stat-fill.teal { background: #5a9e8f; }
+  .stat-fill.gold { background: #d4a94a; }
+  .stat-count { width: 48px; text-align: right; color: #333; font-weight: 600; }
+
+  /* 对照卡片 */
+  .compare-list { display: flex; flex-direction: column; gap: 10px; }
+  .compare-item {
+    background: #faf8f4;
+    border-radius: 12px;
+    padding: 12px 14px;
+  }
+  .compare-wrong {
+    font-size: 12.5px;
+    color: #b8543a;
+    text-decoration: line-through;
+    text-decoration-color: rgba(184,84,58,0.4);
+    margin-bottom: 5px;
+  }
+  .compare-right {
+    font-size: 13.5px;
+    color: #1a1a1a;
+    font-weight: 600;
+  }
+  .compare-note {
+    font-size: 11.5px;
+    color: #888;
+    margin-top: 5px;
+  }
+
+  /* 搭配清单 */
+  .phrase-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .phrase-item {
+    background: #faf8f4;
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+  .phrase-item .bad {
+    color: #b8543a;
+    text-decoration: line-through;
+    text-decoration-color: rgba(184,84,58,0.4);
+    display: block;
+  }
+  .phrase-item .good {
+    color: #2e7d5b;
+    font-weight: 600;
+    display: block;
+    margin-top: 3px;
+  }
+
+  /* 建议 */
+  .tips { display: flex; flex-direction: column; gap: 10px; }
+  .tip {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    font-size: 13px;
+    line-height: 1.55;
+  }
+  .tip-num {
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    background: #2e7d5b;
+    color: #fff;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 22px;
+    font-size: 12px;
+    font-weight: 700;
+    margin-top: 1px;
+  }
+
+  /* 结尾金句 */
+  .footer {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+    text-align: center;
+    font-size: 14px;
+    color: #2e7d5b;
+    font-weight: 600;
+    line-height: 1.6;
+  }
+  .footer small {
+    display: block;
+    font-size: 11px;
+    color: #aaa;
+    font-weight: 400;
+    margin-top: 8px;
+  }
+</style>
+</head>
+<body>
+<div class="card">
+
+  <div class="header">
+    <div class="tag">AI 英语复盘</div>
+    <h1>练了 20 分钟英语<br>AI 帮我找出 <span class="num">25</span> 处问题</h1>
+    <div class="sub">一次通勤路上的口语练习 · 逐句复盘</div>
+  </div>
+
+  <div class="section-title">问题分布</div>
+  <div class="stats">
+    <div class="stat-row">
+      <span class="stat-label">语法形态</span>
+      <div class="stat-bar"><div class="stat-fill" style="width:90%"></div></div>
+      <span class="stat-count">9 处</span>
+    </div>
+    <div class="stat-row">
+      <span class="stat-label">用词词性</span>
+      <div class="stat-bar"><div class="stat-fill teal" style="width:60%"></div></div>
+      <span class="stat-count">6 处</span>
+    </div>
+    <div class="stat-row">
+      <span class="stat-label">句子结构</span>
+      <div class="stat-bar"><div class="stat-fill gold" style="width:50%"></div></div>
+      <span class="stat-count">5 处</span>
+    </div>
+    <div class="stat-row">
+      <span class="stat-label">中式直译</span>
+      <div class="stat-bar"><div class="stat-fill orange" style="width:50%"></div></div>
+      <span class="stat-count">5 处</span>
+    </div>
+  </div>
+
+  <div class="section-title">7 句典型错误对照</div>
+  <div class="compare-list">
+    <div class="compare-item">
+      <div class="compare-wrong">I am responsible the project</div>
+      <div class="compare-right">I'm responsible for the project.</div>
+      <div class="compare-note">responsible 后必须加 for</div>
+    </div>
+    <div class="compare-item">
+      <div class="compare-wrong">I will to develop and maintain it</div>
+      <div class="compare-right">I develop and maintain it.</div>
+      <div class="compare-note">will 后接动词原形，不加 to</div>
+    </div>
+    <div class="compare-item">
+      <div class="compare-wrong">I can't understand your mean</div>
+      <div class="compare-right">Sorry, I can't understand what you mean.</div>
+      <div class="compare-note">mean 是动词，要说 what you mean</div>
+    </div>
+    <div class="compare-item">
+      <div class="compare-wrong">Most of time</div>
+      <div class="compare-right">Most of the time</div>
+      <div class="compare-note">缺定冠词 the</div>
+    </div>
+    <div class="compare-item">
+      <div class="compare-wrong">Almost yes</div>
+      <div class="compare-right">Almost always.</div>
+      <div class="compare-note">中文直翻，native 不这么说</div>
+    </div>
+    <div class="compare-item">
+      <div class="compare-wrong">We have a communicate problem</div>
+      <div class="compare-right">We have a communication problem.</div>
+      <div class="compare-note">修饰名词用名词形式</div>
+    </div>
+    <div class="compare-item">
+      <div class="compare-wrong">It's still have the problem</div>
+      <div class="compare-right">There are still problems.</div>
+      <div class="compare-note">be 动词和实义动词不能叠用</div>
+    </div>
+  </div>
+
+  <div class="section-title">8 个高频搭配</div>
+  <div class="phrase-grid">
+    <div class="phrase-item">
+      <span class="bad">responsible the…</span>
+      <span class="good">be responsible for…</span>
+    </div>
+    <div class="phrase-item">
+      <span class="bad">agree my…</span>
+      <span class="good">agree with me</span>
+    </div>
+    <div class="phrase-item">
+      <span class="bad">most of time</span>
+      <span class="good">most of the time</span>
+    </div>
+    <div class="phrase-item">
+      <span class="bad">communicate problem</span>
+      <span class="good">communication problem</span>
+    </div>
+    <div class="phrase-item">
+      <span class="bad">progress（流程）</span>
+      <span class="good">process</span>
+    </div>
+    <div class="phrase-item">
+      <span class="bad">will to do it</span>
+      <span class="good">implement</span>
+    </div>
+    <div class="phrase-item">
+      <span class="bad">it's still have…</span>
+      <span class="good">there are still…</span>
+    </div>
+    <div class="phrase-item">
+      <span class="bad">spend time to do</span>
+      <span class="good">spend time doing</span>
+    </div>
+  </div>
+
+  <div class="section-title">下次怎么练</div>
+  <div class="tips">
+    <div class="tip">
+      <div class="tip-num">1</div>
+      <div>开口前先在心里组一遍「主语+动词+宾语」，能同时减少重复和犹豫词。</div>
+    </div>
+    <div class="tip">
+      <div class="tip-num">2</div>
+      <div>每次只挑 3 个搭配刻意用一次，比一次记 10 个有用。</div>
+    </div>
+    <div class="tip">
+      <div class="tip-num">3</div>
+      <div>听不懂背熟一句：「Sorry, could you say that again?」</div>
+    </div>
+  </div>
+
+  <div class="footer">
+    练 20 分钟，复盘 10 分钟<br>比盲目多聊一个月有用
+    <small>用 AI 当英语陪练 · 练→复盘→改</small>
+  </div>
+
+</div>
+</body>
+</html>

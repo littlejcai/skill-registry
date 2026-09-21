@@ -22,7 +22,7 @@ skills/
 
 | 技能 | 说明 | 来源 |
 | --- | --- | --- |
-| [cairn-english-review](skills/cairn-english-review/SKILL.md) | 把英语口语练习对话（豆包链接/聊天记录/转录文本）整理成复盘文档：四类错误归因、逐句对照、词汇清单与改进建议，交付飞书文档 | 本仓库 |
+| [cairn-english-review](skills/cairn-english-review/SKILL.md) | 把英语口语练习对话（豆包链接/聊天记录/转录文本）整理成复盘文档：四类错误归因、逐句对照、词汇清单与改进建议，交付飞书文档；可按需生成竖版分享卡片（朋友圈/小红书） | 本仓库 |
 | [cairn-study-preview](skills/cairn-study-preview/SKILL.md) | 按教材版本、年级学期、课次生成一页 A4 提问式预习单 | 本仓库 |
 | [cairn-math-visual](skills/cairn-math-visual/SKILL.md) | 把小学数学题或抽象概念变成"看图就懂"的可视化讲解（线段图/分物图/方格面积等），产出自包含 Markdown | 本仓库 |
 | [cairn-study-diagnose](skills/cairn-study-diagnose/SKILL.md) | 错题四类归因记入学习档案，针对弱点生成带机器验证的变式练习卷并自动判题 | 本仓库 |
