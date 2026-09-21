@@ -12,15 +12,21 @@ skills/
     scripts/      # 可选，技能用到的脚本
 ```
 
+## 命名规范
+
+**cairn** /ˈkɛərn/，垒石为标——把每一次练习，垒成学习的路标。
+
+自研 skill 统一按 `cairn-<domain>-<capability>` 命名（domain：math / chinese / english / parenting / study / edu；capability：review / diagnose / preview / visual / error-book / quiz / mentor / grader / planner / explainer / coach）。SKILL.md 头部为超集 frontmatter：`name` 与 `slug` 同值（GitHub / SkillHub / 豆包四端一个 ID），含 `displayName`（Cairn · 中文名）、`version`、`summary`（平台检索用：能力+触发+边界）与 `license`。
+
 ## 技能列表
 
 | 技能 | 说明 | 来源 |
 | --- | --- | --- |
-| [english-practice-review](skills/english-practice-review/SKILL.md) | 把英语口语练习对话（豆包链接/聊天记录/转录文本）整理成复盘文档：四类错误归因、逐句对照、词汇清单与改进建议，交付飞书文档 | 本仓库 |
-| [preview-lesson](skills/preview-lesson/SKILL.md) | 按教材版本、年级学期、课次生成一页 A4 提问式预习单 | 本仓库 |
-| [visual-explain](skills/visual-explain/SKILL.md) | 把小学数学题或抽象概念变成"看图就懂"的可视化讲解（线段图/分物图/方格面积等），产出自包含 Markdown | 本仓库 |
-| [diagnose-quiz](skills/diagnose-quiz/SKILL.md) | 错题四类归因记入学习档案，针对弱点生成带机器验证的变式练习卷并自动判题 | 本仓库 |
-| [cuoti-fast](skills/cuoti-fast/SKILL.md) | 校验驱动整理试卷/作业错题：原图通读+逐题独立验算，只放大确认错题候选，输出含证据图的结构化 Markdown 错题本 | 本仓库 |
+| [cairn-english-review](skills/cairn-english-review/SKILL.md) | 把英语口语练习对话（豆包链接/聊天记录/转录文本）整理成复盘文档：四类错误归因、逐句对照、词汇清单与改进建议，交付飞书文档 | 本仓库 |
+| [cairn-study-preview](skills/cairn-study-preview/SKILL.md) | 按教材版本、年级学期、课次生成一页 A4 提问式预习单 | 本仓库 |
+| [cairn-math-visual](skills/cairn-math-visual/SKILL.md) | 把小学数学题或抽象概念变成"看图就懂"的可视化讲解（线段图/分物图/方格面积等），产出自包含 Markdown | 本仓库 |
+| [cairn-study-diagnose](skills/cairn-study-diagnose/SKILL.md) | 错题四类归因记入学习档案，针对弱点生成带机器验证的变式练习卷并自动判题 | 本仓库 |
+| [cairn-study-error-book](skills/cairn-study-error-book/SKILL.md) | 校验驱动整理试卷/作业错题：原图通读+逐题独立验算，只放大确认错题候选，输出含证据图的结构化 Markdown 错题本 | 本仓库 |
 
 ## 收录的外部技能（仅链接，不复制源码）
 

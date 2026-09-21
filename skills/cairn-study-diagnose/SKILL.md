@@ -1,8 +1,12 @@
 ---
-name: diagnose-quiz
-version: 1.0.0
+name: cairn-study-diagnose
+slug: cairn-study-diagnose
+displayName: Cairn · 错题诊断师
 display_name: 错题诊断师
 display_name_en: Mistake Diagnostician
+version: 1.0.0
+summary: "在错题集之后回答"为什么错、怎么补"：错题按概念/审题/计算/方法四类归因记入学习档案，生成带机器验证的变式练习卷并自动判题、更新档案。用户说"分析错因/针对错题出练习/判一下练习"时使用。不做错题照片整理（转 cairn-study-error-book）。"
+license: MIT
 description: "在错题集之后回答'为什么错、怎么补'：把错题按概念/审题/计算/方法四类归因并记入学习档案，针对弱点自动生成带机器验证的变式练习卷，孩子做完发回答案即自动判题并更新档案状态。用户说'分析下错因''针对错题出点练习''判一下孩子做的练习'时使用。"
 description_zh: "在错题集之后回答为什么错、怎么补：错题按概念/审题/计算/方法四类归因记入学习档案，针对弱点生成自带机器验证的变式练习卷（换数字/换情境/反向提问），孩子做完发回答案即自动判题并更新档案状态。适用于错因分析、针对性出题、练习判题场景。"
 description_en: "The step after a mistake notebook: diagnose why each mistake happened (concept / misreading / careless calc / missing method), record it into a persistent learner profile, generate variant drills (new numbers, new context, reversed question) that carry machine-checkable verification expressions, then grade the child's answers and update the profile. Use for error-cause analysis, targeted practice generation, and answer grading."
