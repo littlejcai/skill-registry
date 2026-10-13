@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>并行处理为什么按批次改变耗时</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #f6f5ef; color: #20362f; font: 16px/1.65 system-ui, -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; }
+    main { max-width: 880px; margin: auto; padding: 40px 24px; }
+    h1 { font-size: clamp(25px, 4vw, 34px); line-height: 1.35; margin: 10px 0 18px; }
+    h2 { font-size: 19px; margin: 0 0 12px; }
+    p { margin: 12px 0; }
+    .eyebrow { font-size: 14px; color: #4f645b; }
+    .assumption { border-left: 4px solid #b38632; padding: 10px 16px; background: #fff4d8; }
+    .controls { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin: 26px 0; }
+    label { display: block; font-weight: 600; }
+    label span { display: block; font-size: 13px; font-weight: 400; color: #52655c; }
+    input { display: block; width: 100%; min-width: 0; margin-top: 8px; border: 1px solid #718c7d; border-radius: 6px; padding: 10px 12px; font: inherit; color: inherit; background: #fff; }
+    .result { padding: 20px 0; border-top: 1px solid #c3cdc4; border-bottom: 1px solid #c3cdc4; }
+    .number { font-size: 38px; line-height: 1.2; font-weight: 600; font-variant-numeric: tabular-nums; color: #165b41; }
+    #summary { margin-bottom: 0; }
+    #error { color: #932c24; font-weight: 600; }
+    section { margin-top: 26px; }
+    #batches { padding: 0; list-style: none; display: grid; gap: 12px; }
+    .batch { display: grid; grid-template-columns: 88px minmax(0, 1fr); gap: 12px; align-items: center; }
+    .batch-label { font-size: 14px; line-height: 1.5; }
+    .slots { display: grid; grid-template-columns: repeat(var(--columns), minmax(0, 1fr)); gap: 5px; }
+    .file { background: #237657; color: #fff; border-radius: 4px; padding: 10px 0; text-align: center; font-size: 14px; font-variant-numeric: tabular-nums; }
+    details { margin-top: 28px; padding-top: 16px; border-top: 1px solid #c3cdc4; }
+    summary { cursor: pointer; font-weight: 600; }
+    .source { font-size: 14px; color: #52655c; margin-top: 24px; }
+    @media (max-width: 560px) { main { padding: 24px 16px; } .controls { grid-template-columns: 1fr; gap: 16px; } .batch { grid-template-columns: 1fr; gap: 5px; } .file { font-size: 13px; } }
+  </style>
+</head>
+<body>
+<main>
+  <div class="eyebrow">帮我看懂 · 可操作的教学示例</div>
+  <h1>同时处理得更多，<br>耗时会怎样变？</h1>
+  <p>调整三个条件，看看文件怎样分批，以及需要多少生成时间。</p>
+  <p class="assumption"><strong>教学假设，不代表真实预测。</strong>每份文件耗时相同，各批依次处理，同一批中的文件同时开始、同时结束。下方只计算生成时间。</p>
+  <div class="controls">
+    <label for="count">文件数量<span>0—24 份，整数</span><input id="count" type="number" min="0" max="24" step="1" value="10" inputmode="numeric"></label>
+    <label for="parallel">同时生成数量<span>1—8 份，整数</span><input id="parallel" type="number" min="1" max="8" step="1" value="3" inputmode="numeric"></label>
+    <label for="duration">每份生成耗时<span>1—10 分钟，整数</span><input id="duration" type="number" min="1" max="10" step="1" value="2" inputmode="numeric"></label>
+  </div>
+  <p id="error" role="alert" hidden></p>
+  <div class="result" aria-live="polite" aria-atomic="true">
+    <div>总生成耗时</div>
+    <div class="number" id="total">—</div>
+    <p id="summary">等待计算。</p>
+  </div>
+  <section aria-labelledby="batch-title">
+    <h2 id="batch-title">每一批怎样安排</h2>
+    <p>同一行同时生成；处理完一行，再进入下一行。数字是文件编号。</p>
+    <ol id="batches" aria-label="按顺序处理的批次"></ol>
+  </section>
+  <details>
+    <summary>这个计算包括什么？</summary>
+    <p>先用文件数量除以同时生成数量，再把不足一批的部分算作一批。批次数乘以每份生成耗时，就是这里的总生成耗时。没有文件时，批次数和耗时都是零。</p>
+    <p>这里不计格式与权限检查、等待、传输、重试、补材料和人工核对。这也不是阅读时间，不能用来推断阅读速度提升。</p>
+    <p>例如：10 份文件、每批最多 3 份、每份 2 分钟，需要 4 批，共 8 分钟。改成每批最多 5 份，需要 2 批，共 4 分钟。</p>
+  </details>
+  <p class="source">依据：技能包内《资料处理器：自拟教学材料》的理想模型。全部材料为教学自拟。</p>
+  <noscript><p>当前环境未运行脚本，无法交互。默认条件下：10 份文件，每批 3 份，每份 2 分钟，共 4 批、8 分钟。</p></noscript>
+</main>
+<script>
+  const countInput = document.getElementById('count');
+  const parallelInput = document.getElementById('parallel');
+  const durationInput = document.getElementById('duration');
+  const total = document.getElementById('total');
+  const summary = document.getElementById('summary');
+  const batches = document.getElementById('batches');
+  const error = document.getElementById('error');
+
+  function update() {
+    const inputs = [countInput, parallelInput, durationInput];
+    const values = inputs.map(input => Number(input.value));
+    const valid = inputs.every((input, index) => input.value.trim() !== '' && Number.isInteger(values[index]) && values[index] >= Number(input.min) && values[index] <= Number(input.max));
+    batches.replaceChildren();
+    if (!valid) {
+      error.textContent = '请输入范围内的整数：文件数 0—24，同时生成数 1—8，每份耗时 1—10 分钟。';
+      error.hidden = false;
+      total.textContent = '—';
+      summary.textContent = '当前输入未计算，请修正后查看结果。';
+      return;
+    }
+    error.hidden = true;
+    error.textContent = '';
+    const [count, parallel, duration] = values;
+    const waves = Math.ceil(count / parallel);
+    total.textContent = `${waves * duration} 分钟`;
+    summary.textContent = count === 0 ? '没有文件：0 批次，0 分钟。' : `${count} 份文件，每批最多 ${parallel} 份，需要 ${waves} 批；每批 ${duration} 分钟。`;
+    for (let wave = 0; wave < waves; wave++) {
+      const row = document.createElement('li');
+      row.className = 'batch';
+      const label = document.createElement('div');
+      label.className = 'batch-label';
+      label.textContent = `第 ${wave + 1} 批 · ${wave * duration}—${(wave + 1) * duration} 分钟`;
+      const slots = document.createElement('div');
+      slots.className = 'slots';
+      slots.style.setProperty('--columns', String(parallel));
+      const first = wave * parallel;
+      for (let item = first; item < Math.min(first + parallel, count); item++) {
+        const file = document.createElement('span');
+        file.className = 'file';
+        file.textContent = String(item + 1);
+        file.setAttribute('aria-label', `文件 ${item + 1}`);
+        slots.append(file);
+      }
+      row.append(label, slots);
+      batches.append(row);
+    }
+  }
+  [countInput, parallelInput, durationInput].forEach(input => input.addEventListener('input', update));
+  update();
+</script>
+</body>
+</html>

@@ -27,6 +27,7 @@ skills/
 | [cairn-math-visual](skills/cairn-math-visual/SKILL.md) | 把小学数学题或抽象概念变成"看图就懂"的可视化讲解（线段图/分物图/方格面积等），产出自包含 Markdown | 本仓库 |
 | [cairn-study-diagnose](skills/cairn-study-diagnose/SKILL.md) | 错题四类归因记入学习档案，针对弱点生成带机器验证的变式练习卷并自动判题 | 本仓库 |
 | [cairn-study-error-book](skills/cairn-study-error-book/SKILL.md) | 校验驱动整理试卷/作业错题：原图通读+逐题独立验算，只放大确认错题候选，输出含证据图的结构化 Markdown 错题本 | 本仓库 |
+| [help-me-understand](skills/help-me-understand/SKILL.md) | 帮我看懂：识别论文、报告、复杂方案中的理解障碍，自动选择文字、图示或交互 HTML 讲清楚，并保留来源与适用边界 | 得到AI学习圈 |
 
 ## 收录的外部技能（仅链接，不复制源码）
 
