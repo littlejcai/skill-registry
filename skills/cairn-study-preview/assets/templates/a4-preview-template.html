@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>预习单 · {{课题标题}}</title>
+<!--
+  A4 预习单打印模板（好奇单）
+  ============================================
+  使用方法：复制本文件，替换 {{占位符}} 后保存为 HTML。
+
+  ┌─ 版本说明 ─────────────────────────────────┐
+  │ 本模板服务好奇单（默认档）：六步动作链 +    │
+  │ 拓展角 1~2 条 + 自我检查 + 家长角           │
+  │ 第 2 页配"参考答案（家长核对版）"：见本文件  │
+  │ 末尾的 .answer-page 区块                    │
+  │ （速查卡用 quick-check-template.html）      │
+  └──────────────────────────────────────────────┘
+
+  ┌─ 参考答案页规则 ────────────────────────────┐
+  │ 第 2 页为家长核对版，打印时同文件自动分页：  │
+  │  · 客观内容题（情节/计算结果/词义/句型）→   │
+  │    给标准参考答案，标注"参考"              │
+  │  · 主观题（猜测/感受/提问/复述）→ 给核对    │
+  │    要点，标注"无唯一答案"，答到方向即可     │
+  │  · 页头固定警示"先完成预习再对照，不要照着   │
+  │    抄"；不给教学重点（"为什么这样写"等）    │
+  │  · 颜色固定用中性灰绿（#8a9a7a 系），与各    │
+  │    卡主题色不冲突                           │
+  │  生成时逐条对照预习卡六步 + 自我检查 + 拓展  │
+  │  角给出参考/要点，再按科目核实（同 Phase 1）│
+  └──────────────────────────────────────────────┘
+
+  ┌─ 科目适配 ──────────────────────────────────┐
+  │ 统一骨架：六步动作链 看→读→圈→想→说→问     │
+  │ 每科每步具体指令见 references/by-type-and-grade.md │
+  │                                            │
+  │ 【语文】6步（示例）：                       │
+  │  ① 看：看标题，猜一猜                       │
+  │  ② 读：朗读全文，读不准的先圈出来           │
+  │  ③ 圈：圈出卡点（生字/不懂的句子）          │
+  │  ④ 想：故事讲了什么？哪个细节最吸引你？     │
+  │  ⑤ 说：合上书讲一遍大意                     │
+  │  ⑥ 问：写下最想弄明白的问题                 │
+  │                                            │
+  │ 【数学】6步：                               │
+  │  ① 看：看课题，今天学什么？已知道什么？     │
+  │  ② 读：读例题，看懂在问什么                 │
+  │  ③ 圈：圈看不懂的步骤                       │
+  │  ④ 想：先自己试做一道，联系旧知识           │
+  │  ⑤ 说：合上书讲思路                         │
+  │  ⑥ 问：哪里还没搞懂？                       │
+  │                                            │
+  │  【英语】6步见 references/by-type-and-grade.md │
+  │                                            │
+  │ 【科学】6步：                               │
+  │  ① 看：看课题猜研究什么                     │
+  │  ② 读：课文讲了什么现象？                   │
+  │  ③ 圈：圈出觉得奇怪的地方                   │
+  │  ④ 想：猜实验会有什么结果                   │
+  │  ⑤ 说：联系生活，在哪见过？                 │
+  │  ⑥ 问：最想验证什么？                       │
+  └──────────────────────────────────────────────┘
+
+  排版规范（v3：动笔导向，勿轻易改结构）：
+  - A4 竖版，flex column 布局；顶部标题区固定，中间步骤区 flex:1
+  - 步骤自上而下紧凑排列（gap 14px，不用 space-around 硬撑），
+    空白沉底由拓展角/家长角视觉承接
+  - 每步 2 行写字横线（26px 高，孩子动笔区）；①看/⑥问 可按内容给 2~3 行
+  - 打印勾选"背景图形"；@media print 下 .page 高度 auto 按内容分页
+
+  ┌─ 主题色怎么选 ─────────────────────────────┐
+  │ 不按科目固定，按课文内容选色：              │
+  │  植物/自然/春天 → 绿 #6a994e               │
+  │  海洋/水/天空 → 蓝 #4a7a9e                 │
+  │  秋天/果实/数学 → 橙 #c97a3a               │
+  │  节日/温暖故事 → 红 #b85c5c                │
+  │  夜晚/星空/科学 → 紫 #6b5b8e               │
+  │  动物/活力 → 黄绿 #7a9a3a                  │
+  │  选好主色后，全局替换 #6a994e 即可          │
+  │  辅色/浅底色自动跟着调浅一档                │
+  └──────────────────────────────────────────────┘
+-->
+<style>
+  @page { size: A4 portrait; margin: 10mm 12mm; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+    color: #2c3e2d; background: #f5f3ee; line-height: 1.5;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  .page {
+    width: 210mm; height: 297mm; margin: 0 auto;
+    background: #fffef9; padding: 10mm 12mm;
+    display: flex; flex-direction: column;
+  }
+
+  .header {
+    display: flex; align-items: center; gap: 12px;
+    padding-bottom: 8px; border-bottom: 2.5px solid #6a994e;
+    margin-bottom: 10px; flex-shrink: 0;
+  }
+  .header img {
+    width: 64px; height: 64px; object-fit: cover;
+    border-radius: 10px; border: 2px solid #a7c957;
+  }
+  .header-text h1 { font-size: 21px; color: #386641; letter-spacing: 1px; }
+  .header-text .meta { font-size: 12px; color: #6b7a6b; margin-top: 3px; }
+  .header-text .meta span {
+    display: inline-block; background: #e8f0e3;
+    padding: 2px 8px; border-radius: 10px; margin-right: 6px;
+  }
+
+  .steps {
+    flex: 1; display: flex; flex-direction: column;
+    justify-content: flex-start; gap: 14px;
+  }
+  .step { display: flex; gap: 10px; align-items: flex-start; }
+  .num {
+    flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%;
+    background: #6a994e; color: #fff; font-size: 13px; font-weight: bold;
+    display: flex; align-items: center; justify-content: center; margin-top: 2px;
+  }
+  .step-body { flex: 1; }
+  .step-body .title { font-size: 14.5px; font-weight: bold; color: #386641; }
+  .step-body .hint { font-size: 12.5px; color: #7a8a7a; margin-bottom: 3px; }
+  .write-line {
+    border-bottom: 1px dashed #b0c4a8; height: 26px; margin: 2px 0;
+  }
+  .write-line.short { width: 55%; }
+  .write-line.long { width: 100%; }
+
+  /* 英语音标窄横线（英语版步骤1用） */
+  .phonetic-line {
+    border-bottom: 1px dotted #b0c4a8; height: 18px;
+    margin: 2px 0; width: 40%;
+  }
+
+  /* 数学算式方格区（数学版步骤4用） */
+  .calc-box {
+    border: 1px dashed #b0c4a8; border-radius: 4px;
+    min-height: 80px; margin: 4px 0; padding: 4px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4px;
+  }
+  .calc-box::before {
+    content: ""; grid-column: 1 / -1; height: 1px;
+  }
+
+  .checklist {
+    display: flex; gap: 16px; margin-top: 8px;
+    font-size: 12px; color: #5a6a5a; flex-shrink: 0;
+  }
+  .checklist span::before { content: "☐ "; font-size: 14px; }
+
+  /* 拓展角（好奇单选做） */
+  .extra {
+    margin-top: 8px; background: #f0f5e8;
+    border-left: 4px solid #a7c957; border-radius: 0 8px 8px 0;
+    padding: 8px 12px; flex-shrink: 0;
+  }
+  .extra .extra-title { font-size: 13px; font-weight: bold; color: #5a7a3a; margin-bottom: 4px; }
+  .extra-item {
+    font-size: 12px; color: #4a5a4a; margin-bottom: 4px;
+    padding-left: 18px; position: relative; line-height: 1.5;
+  }
+  .extra-item::before { content: "🌱"; position: absolute; left: 0; font-size: 12px; }
+  .extra-item.with-img { display: flex; gap: 8px; align-items: flex-start; }
+  .extra-item.with-img img {
+    width: 36px; height: 42px; object-fit: cover;
+    border-radius: 4px; flex-shrink: 0;
+  }
+
+  .parent {
+    margin-top: 6px; background: #faf8f3;
+    border: 1px dashed #c9b99a; border-radius: 8px;
+    padding: 6px 12px; font-size: 11px; color: #8a7a5a;
+    line-height: 1.5; flex-shrink: 0;
+  }
+  .parent b { color: #6b5a3a; }
+
+  @media print {
+    body { background: #fff; }
+    .page { margin: 0; padding: 0; width: auto; height: auto; }
+  }
+
+  /* ===== 参考答案页（家长核对版，第2页）===== */
+  .page { page-break-after: always; }
+  .page:last-child { page-break-after: auto; }
+  .answer-page {
+    background: #fbfaf6; gap: 10px;
+  }
+  .ans-header { padding-bottom: 8px; border-bottom: 2.5px solid #8a9a7a; flex-shrink: 0; }
+  .ans-header h2 { font-size: 17px; color: #4a5a3a; letter-spacing: 1px; }
+  .ans-header .ans-meta { font-size: 11.5px; color: #7a8a7a; margin-top: 2px; }
+  .ans-warn {
+    background: #fdf3e3; border: 1px dashed #d4b86a; border-radius: 8px;
+    padding: 6px 10px; font-size: 11.5px; color: #8a6a3a; line-height: 1.6; flex-shrink: 0;
+  }
+  .ans-block { display: flex; gap: 10px; align-items: flex-start; }
+  .ans-num {
+    flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%;
+    background: #8a9a7a; color: #fff; font-size: 12px; font-weight: bold;
+    display: flex; align-items: center; justify-content: center; margin-top: 2px;
+  }
+  .ans-body { flex: 1; }
+  .ans-q { font-size: 12.5px; font-weight: bold; color: #4a5a3a; }
+  .ans-a { font-size: 12px; color: #5a6a5a; line-height: 1.6; margin-top: 2px; }
+  .ans-a b { color: #6b7a5a; }
+  .ans-tag {
+    display: inline-block; font-size: 10.5px; padding: 1px 8px; border-radius: 8px;
+    margin-left: 6px; vertical-align: middle;
+  }
+  .ans-tag.obj { background: #e4ecda; color: #4a6a3a; }
+  .ans-tag.open { background: #f0e8d8; color: #8a6a3a; }
+  .ans-section {
+    background: #f2f4ec; border-radius: 8px; padding: 8px 12px; flex-shrink: 0;
+  }
+  .ans-section .sec-title { font-size: 12.5px; font-weight: bold; color: #4a6a3a; margin-bottom: 4px; }
+  .ans-section p { font-size: 11.5px; color: #5a6a5a; line-height: 1.6; }
+  .ans-parent {
+    background: #faf8f3; border: 1px dashed #c9b99a; border-radius: 8px;
+    padding: 6px 12px; font-size: 11.5px; color: #7a6a4a; line-height: 1.6; flex-shrink: 0;
+  }
+  .ans-parent b { color: #6b5a3a; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ▼ 顶部 -->
+  <div class="header">
+    <img src="{{主图URL}}" alt="{{课题标题}}配图">
+    <div class="header-text">
+      <h1>📖 预习单</h1>
+      <div class="meta">
+        <span>《{{课题标题}}》</span>
+        <span>{{教材版本}} · {{年级学期}} · {{单元/章节}}</span>
+        <span>⏱ 约{{预计时间}}分钟</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ▼ 6个步骤：按科目参考注释里的步骤列表填 -->
+  <!-- 数学版步骤4：把下面的 write-line 换成 <div class="calc-box"></div> 写算式 -->
+  <!-- 英语版步骤1：在 write-line 后面加 <div class="phonetic-line"></div> 写音标 -->
+  <div class="steps">
+    <div class="step">
+      <div class="num">1</div>
+      <div class="step-body">
+        <div class="title">{{步骤1标题}}</div>
+        <div class="hint">{{步骤1提示}}</div>
+        <div class="write-line long"></div>
+        <div class="write-line long"></div>
+        <!-- 英语版加：<div class="phonetic-line"></div> -->
+      </div>
+    </div>
+    <div class="step">
+      <div class="num">2</div>
+      <div class="step-body">
+        <div class="title">{{步骤2标题}}</div>
+        <div class="hint">{{步骤2提示}}</div>
+        <div class="write-line long"></div>
+        <div class="write-line long"></div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="num">3</div>
+      <div class="step-body">
+        <div class="title">{{步骤3标题}}</div>
+        <div class="hint">{{步骤3提示}}</div>
+        <div class="write-line long"></div>
+        <div class="write-line long"></div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="num">4</div>
+      <div class="step-body">
+        <div class="title">{{步骤4标题}}</div>
+        <div class="hint">{{步骤4提示}}</div>
+        <!-- 数学版：把下面两行 write-line 换成 <div class="calc-box"></div> -->
+        <div class="write-line long"></div>
+        <div class="write-line short"></div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="num">5</div>
+      <div class="step-body">
+        <div class="title">{{步骤5标题}}</div>
+        <div class="hint">{{步骤5提示}}</div>
+        <div class="write-line long"></div>
+        <div class="write-line long"></div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="num">6</div>
+      <div class="step-body">
+        <div class="title">{{步骤6标题}}</div>
+        <div class="hint">{{步骤6提示}}</div>
+        <div class="write-line long"></div>
+        <div class="write-line long"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ▼ 自我检查（开放性勾选，不做知识点测试；文字按科目可换） -->
+  <div class="checklist">
+    <span>{{勾选1}}</span>
+    <span>{{勾选2}}</span>
+    <span>{{勾选3}}</span>
+    <span>{{勾选4}}</span>
+  </div>
+
+  <!-- ▼ 拓展角（好奇单选做） -->
+  <div class="extra">
+    <div class="extra-title">🌱 拓展角（选做）</div>
+    <div class="extra-item">{{拓展角内容1}}</div>
+    <div class="extra-item">{{拓展角内容2（可选）}}</div>
+  </div>
+
+  <div class="parent">
+    <b>给家长：</b>{{给家长的提示}}
+  </div>
+
+</div>
+
+<!-- ===== 第2页：参考答案（家长核对版）=====
+   ↓ 好奇单第 2 页保留本页。
+   逐条对应预习卡六步填写；主观题给核对要点（标注"无唯一答案"），
+   客观题给参考答案（标注"参考"）。样式配色固定中性灰绿，勿改。
+   内容必须经 Phase 1 核实，不给教学重点。 ↓ -->
+<div class="page answer-page">
+
+  <div class="ans-header">
+    <h2>📄 参考答案 · 家长核对版</h2>
+    <div class="ans-meta">{{课题标题}} · {{教材版本}} · {{年级学期}} · {{单元/章节}}</div>
+  </div>
+
+  <div class="ans-warn">⚠️ 先让孩子独立完成预习，再翻开本页对照；不要让孩子照着抄。主观题没有唯一答案，孩子答到"方向"就算达到目标。</div>
+
+  <div class="ans-block">
+    <div class="ans-num">1</div>
+    <div class="ans-body">
+      <div class="ans-q">{{步骤1标题}} <span class="ans-tag open">无唯一答案</span></div>
+      <div class="ans-a"><b>核对要点：</b>{{步骤1核对要点}}</div>
+    </div>
+  </div>
+
+  <div class="ans-block">
+    <div class="ans-num">2</div>
+    <div class="ans-body">
+      <div class="ans-q">{{步骤2标题}} <span class="ans-tag obj">参考</span></div>
+      <div class="ans-a">{{步骤2参考答案}}</div>
+    </div>
+  </div>
+
+  <div class="ans-block">
+    <div class="ans-num">3</div>
+    <div class="ans-body">
+      <div class="ans-q">{{步骤3标题}} <span class="ans-tag open">无唯一答案</span></div>
+      <div class="ans-a"><b>核对要点：</b>{{步骤3核对要点}}</div>
+    </div>
+  </div>
+
+  <div class="ans-block">
+    <div class="ans-num">4</div>
+    <div class="ans-body">
+      <div class="ans-q">{{步骤4标题}} <span class="ans-tag obj">参考</span></div>
+      <div class="ans-a">{{步骤4参考答案}}</div>
+    </div>
+  </div>
+
+  <div class="ans-block">
+    <div class="ans-num">5</div>
+    <div class="ans-body">
+      <div class="ans-q">{{步骤5标题}} <span class="ans-tag open">无唯一答案</span></div>
+      <div class="ans-a"><b>核对要点：</b>{{步骤5核对要点}}</div>
+    </div>
+  </div>
+
+  <div class="ans-block">
+    <div class="ans-num">6</div>
+    <div class="ans-body">
+      <div class="ans-q">{{步骤6标题}} <span class="ans-tag open">无唯一答案</span></div>
+      <div class="ans-a"><b>核对要点：</b>{{步骤6核对要点}}</div>
+    </div>
+  </div>
+
+  <div class="ans-section">
+    <div class="sec-title">☐ 自我检查三项（孩子自评，家长核对是否真做了）</div>
+    <p>{{勾选1}} · {{勾选2}} · {{勾选3}} —— 三项都勾了，说明这次预习到位了。</p>
+  </div>
+
+  <!-- 好奇单保留此块（对应拓展角） -->
+  <div class="ans-section">
+    <div class="sec-title">🌱 拓展角（选做，无标准答案）</div>
+    <p>{{拓展角1参考提示}}<br>{{拓展角2参考提示（可选）}}</p>
+  </div>
+
+  <div class="ans-parent">
+    <b>给家长：</b>{{答案页给家长的提示（含"答错不用批评"）}}
+  </div>
+
+</div>
+</body>
+</html>

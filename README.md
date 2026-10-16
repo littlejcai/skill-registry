@@ -9,6 +9,7 @@ skills/
   <skill-name>/
     SKILL.md
     references/   # 可选，技能引用的模板、资料
+    assets/       # 可选，技能产出的模板与样例
     scripts/      # 可选，技能用到的脚本
 ```
 
@@ -23,7 +24,7 @@ skills/
 | 技能 | 说明 | 来源 |
 | --- | --- | --- |
 | [cairn-english-review](skills/cairn-english-review/SKILL.md) | 把英语口语练习对话（豆包链接/聊天记录/转录文本）整理成复盘文档：四类错误归因、逐句对照、词汇清单与改进建议，交付飞书文档；可按需生成竖版分享卡片（朋友圈/小红书） | 本仓库 |
-| [cairn-study-preview](skills/cairn-study-preview/SKILL.md) | 按教材版本、年级学期、课次生成一页 A4 提问式预习单 | 本仓库 |
+| [cairn-study-preview](skills/cairn-study-preview/SKILL.md) | 课前预习三档物料（速查卡/好奇单/探索卡），覆盖语文/数学/英语/科学：先核实教材内容，再按六步动作链（看→读→圈→想→说→问）生成一页 A4 预习单或六幕探索卡；含打印版 HTML 模板与 12 份样卡 | 本仓库 |
 | [cairn-math-visual](skills/cairn-math-visual/SKILL.md) | 把小学数学题或抽象概念变成"看图就懂"的可视化讲解（线段图/分物图/方格面积等），产出自包含 Markdown | 本仓库 |
 | [cairn-study-diagnose](skills/cairn-study-diagnose/SKILL.md) | 错题四类归因记入学习档案，针对弱点生成带机器验证的变式练习卷并自动判题 | 本仓库 |
 | [cairn-study-error-book](skills/cairn-study-error-book/SKILL.md) | 校验驱动整理试卷/作业错题：原图通读+逐题独立验算，只放大确认错题候选，输出含证据图的结构化 Markdown 错题本 | 本仓库 |

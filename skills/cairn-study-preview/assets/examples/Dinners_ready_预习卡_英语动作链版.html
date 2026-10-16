@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>预习卡 · Unit 5 Dinner's ready（英语动作链版）</title>
+<style>
+  @page { size: A4 portrait; margin: 10mm 12mm; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+    color: #4a2a2a; background: #f7f3f1; line-height: 1.5;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  .page {
+    width: 210mm; height: 297mm; margin: 0 auto;
+    background: #fffdf9; padding: 10mm 12mm;
+    display: flex; flex-direction: column;
+  }
+
+  .header {
+    display: flex; align-items: center; gap: 12px;
+    padding-bottom: 8px; border-bottom: 2.5px solid #b85c5c;
+    margin-bottom: 10px; flex-shrink: 0;
+  }
+  .header img {
+    width: 64px; height: 64px; object-fit: cover;
+    border-radius: 10px; border: 2px solid #d99a9a;
+  }
+  .header-text h1 { font-size: 21px; color: #7a3a3a; letter-spacing: 1px; }
+  .header-text .meta { font-size: 12px; color: #8a6a6a; margin-top: 3px; }
+  .header-text .meta span {
+    display: inline-block; background: #fbecec;
+    padding: 2px 8px; border-radius: 10px; margin-right: 6px;
+  }
+
+  .steps {
+    flex: 1; display: flex; flex-direction: column;
+    justify-content: flex-start; gap: 14px;
+  }
+  .step { display: flex; gap: 10px; align-items: flex-start; }
+  .num {
+    flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%;
+    background: #b85c5c; color: #fff; font-size: 13px; font-weight: bold;
+    display: flex; align-items: center; justify-content: center; margin-top: 2px;
+  }
+  .step-body { flex: 1; }
+  .step-body .title { font-size: 14.5px; font-weight: bold; color: #7a3a3a; }
+  .step-body .hint { font-size: 12.5px; color: #8a6a6a; margin-bottom: 3px; }
+  .write-line {
+    border-bottom: 1px dashed #d8a8a8; height: 26px; margin: 2px 0;
+  }
+  .write-line.short { width: 55%; }
+  .write-line.long { width: 100%; }
+
+  /* 英语音标窄横线（英语版圈生词后用） */
+  .phonetic-line {
+    border-bottom: 1px dotted #d8a8a8; height: 18px;
+    margin: 2px 0; width: 40%;
+  }
+
+  .checklist {
+    display: flex; gap: 16px; margin-top: 8px;
+    font-size: 12px; color: #8a6a6a; flex-shrink: 0;
+  }
+  .checklist span::before { content: "☐ "; font-size: 14px; }
+
+  .extra {
+    margin-top: 8px; background: #fbf0ec;
+    border-left: 4px solid #d99a9a; border-radius: 0 8px 8px 0;
+    padding: 8px 12px; flex-shrink: 0;
+  }
+  .extra .extra-title { font-size: 13px; font-weight: bold; color: #8a4a4a; margin-bottom: 4px; }
+  .extra-item {
+    font-size: 12px; color: #6a4a4a; margin-bottom: 4px;
+    padding-left: 18px; position: relative; line-height: 1.5;
+  }
+  .extra-item::before { content: "🍽️"; position: absolute; left: 0; font-size: 12px; }
+
+  .parent {
+    margin-top: 6px; background: #faf5f2;
+    border: 1px dashed #d9b0a8; border-radius: 8px;
+    padding: 6px 12px; font-size: 11px; color: #8a6a6a;
+    line-height: 1.5; flex-shrink: 0;
+  }
+  .parent b { color: #6b3a3a; }
+
+  @media print {
+    body { background: #fff; }
+    .page { margin: 0; padding: 0; width: auto; height: auto; }
+  }
+
+  /* ===== 参考答案页（家长核对版）===== */
+  .page { page-break-after: always; }
+  .page:last-child { page-break-after: auto; }
+  .answer-page {
+    background: #fbfaf6; gap: 10px;
+  }
+  .ans-header { padding-bottom: 8px; border-bottom: 2.5px solid #8a9a7a; flex-shrink: 0; }
+  .ans-header h2 { font-size: 17px; color: #4a5a3a; letter-spacing: 1px; }
+  .ans-header .ans-meta { font-size: 11.5px; color: #7a8a7a; margin-top: 2px; }
+  .ans-warn {
+    background: #fdf3e3; border: 1px dashed #d4b86a; border-radius: 8px;
+    padding: 6px 10px; font-size: 11.5px; color: #8a6a3a; line-height: 1.6; flex-shrink: 0;
+  }
+  .ans-block { display: flex; gap: 10px; align-items: flex-start; }
+  .ans-num {
+    flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%;
+    background: #8a9a7a; color: #fff; font-size: 12px; font-weight: bold;
+    display: flex; align-items: center; justify-content: center; margin-top: 2px;
+  }
+  .ans-body { flex: 1; }
+  .ans-q { font-size: 12.5px; font-weight: bold; color: #4a5a3a; }
+  .ans-a { font-size: 12px; color: #5a6a5a; line-height: 1.6; margin-top: 2px; }
+  .ans-a b { color: #6b7a5a; }
+  .ans-tag {
+    display: inline-block; font-size: 10.5px; padding: 1px 8px; border-radius: 8px;
+    margin-left: 6px; vertical-align: middle;
+  }
+  .ans-tag.obj { background: #e4ecda; color: #4a6a3a; }
+  .ans-tag.open { background: #f0e8d8; color: #8a6a3a; }
+  .ans-section {
+    background: #f2f4ec; border-radius: 8px; padding: 8px 12px; flex-shrink: 0;
+  }
+  .ans-section .sec-title { font-size: 12.5px; font-weight: bold; color: #4a6a3a; margin-bottom: 4px; }
+  .ans-section p { font-size: 11.5px; color: #5a6a5a; line-height: 1.6; }
+  .ans-parent {
+    background: #faf8f3; border: 1px dashed #c9b99a; border-radius: 8px;
+    padding: 6px 12px; font-size: 11.5px; color: #7a6a4a; line-height: 1.6; flex-shrink: 0;
+  }
+  .ans-parent b { color: #6b5a3a; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ▼ 顶部 -->
+  <div class="header">
+    <img src="https://aka.doubaocdn.com/s/xMNkljjBSj" alt="Dinner's ready 配图">
+    <div class="header-text">
+      <h1>📖 预习卡</h1>
+      <div class="meta">
+        <span>Unit 5 Dinner's ready</span>
+        <span>人教版PEP英语 · 四年级上册 · Part A Let's talk</span>
+        <span>⏱ 约15-20分钟</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ▼ 六步动作链：看→读→圈→想→说→问（英语版） -->
+  <div class="steps">
+    <div class="step">
+      <div class="num">1</div>
+      <div class="step-body">
+        <div class="title">看 · 看图片，猜一猜</div>
+        <div class="hint">翻开这一课，先别看文字，只看图：你觉得这一课会聊什么？晚餐桌上可能有什么食物？</div>
+        <div class="write-line long"></div>
+        <div class="write-line long"></div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="num">2</div>
+      <div class="step-body">
+        <div class="title">读 · 听读课文，跟读</div>
+        <div class="hint">听录音（或点读），跟着读 Let's talk 的对话；读不准的单词先圈出来。</div>
+        <div class="write-line long"></div>
+        <div class="write-line long"></div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="num">3</div>
+      <div class="step-body">
+        <div class="title">圈 · 圈出生词和不懂的句子</div>
+        <div class="hint">圈出生词（像 soup、bread、vegetables…），在下面试着标标它们的音标；把听不懂的句子也标出来。</div>
+        <div class="write-line long"></div>
+        <div class="phonetic-line"></div>
+        <div class="phonetic-line"></div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="num">4</div>
+      <div class="step-body">
+        <div class="title">想 · 看图猜意，找关键句</div>
+        <div class="hint">看图猜一猜每样食物用英语怎么说？找找"问别人想吃什么"的那句话，试着读一读。</div>
+        <div class="write-line long"></div>
+        <div class="write-line short"></div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="num">5</div>
+      <div class="step-body">
+        <div class="title">说 · 合上书说大意</div>
+        <div class="hint">合上书，用中文或英文说说：这一课在聊什么？（谁在说话？聊了什么吃的？）</div>
+        <div class="write-line long"></div>
+        <div class="write-line long"></div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="num">6</div>
+      <div class="step-body">
+        <div class="title">问 · 写下不懂的句子</div>
+        <div class="hint">写下你最想问的：哪个词或句子还不会读、不明白？明天带去课堂。</div>
+        <div class="write-line long"></div>
+        <div class="write-line long"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ▼ 自我检查（开放性勾选） -->
+  <div class="checklist">
+    <span>我能跟着录音读下来了</span>
+    <span>我能说出课文大概在聊什么</span>
+    <span>我有了自己的问题</span>
+  </div>
+
+  <!-- ▼ 拓展角（选做） -->
+  <div class="extra">
+    <div class="extra-title">🍽️ 拓展角（选做）</div>
+    <div class="extra-item">生活联结：今晚吃饭时，用英语说出 2~3 种你认识的食物的名字（beef? noodles? soup?），说给家人听。</div>
+    <div class="extra-item">好奇延伸：这课的食物单词里，哪些是"中式常吃"的、哪些是"西式常见"的？查查 chopsticks 和 knife and fork 分别是哪边用的。</div>
+  </div>
+
+  <div class="parent">
+    <b>给家长：</b>孩子能跟着读下来、能说出大概在聊什么（中英文都行），就达到这次预习的目标了，不用纠正发音对错。<br>
+    一起聊了吗？☐ 聊了（可画星 ☆☆☆）
+  </div>
+
+</div>
+
+<!-- ===== 第2页：参考答案（家长核对版）===== -->
+<div class="page answer-page">
+
+  <div class="ans-header">
+    <h2>📄 参考答案 · 家长核对版</h2>
+    <div class="ans-meta">Unit 5 Dinner's ready · 人教版PEP英语 · 四年级上册 · Part A Let's talk</div>
+  </div>
+
+  <div class="ans-warn">⚠️ 先让孩子独立完成预习，再翻开本页对照；不要让孩子照着抄。主观题没有唯一答案，孩子答到"方向"就算达到目标。</div>
+
+  <div class="ans-block">
+    <div class="ans-num">1</div>
+    <div class="ans-body">
+      <div class="ans-q">看 · 猜主题 <span class="ans-tag open">无唯一答案</span></div>
+      <div class="ans-a"><b>核对要点：</b>孩子能猜到"晚餐 / 食物 / 吃饭"方向即可（图上通常有餐桌和食物）。</div>
+    </div>
+  </div>
+
+  <div class="ans-block">
+    <div class="ans-num">2</div>
+    <div class="ans-body">
+      <div class="ans-q">读 · 听读跟读 <span class="ans-tag open">无唯一答案</span></div>
+      <div class="ans-a"><b>核对要点：</b>能跟着录音读下来即可，发音对错不纠——能跟读就是进步。</div>
+    </div>
+  </div>
+
+  <div class="ans-block">
+    <div class="ans-num">3</div>
+    <div class="ans-body">
+      <div class="ans-q">圈 · 生词音标 <span class="ans-tag obj">参考</span></div>
+      <div class="ans-a">
+        本课核心词（<b>音标以课本/词典为准</b>）：soup /suːp/ 汤 · bread /bred/ 面包 · fish /fɪʃ/ 鱼 · beef /biːf/ 牛肉 · chicken /ˈtʃɪkɪn/ 鸡肉 · noodles /ˈnuːdlz/ 面条 · vegetable(s) /ˈvedʒtəbl(z)/ 蔬菜 · dinner /ˈdɪnə(r)/ 晚餐。<br>
+        孩子能对照课本标出大概即可。
+      </div>
+    </div>
+  </div>
+
+  <div class="ans-block">
+    <div class="ans-num">4</div>
+    <div class="ans-body">
+      <div class="ans-q">想 · 找关键句 <span class="ans-tag obj">参考</span></div>
+      <div class="ans-a">问别人想吃什么 → <b>What would you like?</b>；回答 → <b>I'd like some...</b>（课文句型）。</div>
+    </div>
+  </div>
+
+  <div class="ans-block">
+    <div class="ans-num">5</div>
+    <div class="ans-body">
+      <div class="ans-q">说 · 说大意 <span class="ans-tag obj">参考</span></div>
+      <div class="ans-a">Mike 饿了，妈妈问他想吃什么；Mike 想要 <b>汤和面包</b>（soup and bread）；爸爸想要 <b>鱼和蔬菜</b>（fish and vegetables）——"Dinner's ready!" 开饭啦。（课文对话大意）</div>
+    </div>
+  </div>
+
+  <div class="ans-block">
+    <div class="ans-num">6</div>
+    <div class="ans-body">
+      <div class="ans-q">问 · 留一个问题 <span class="ans-tag open">无唯一答案</span></div>
+      <div class="ans-a"><b>核对要点：</b>孩子能写下一个不会读/不明白的词或句子即可，不用现在解决。</div>
+    </div>
+  </div>
+
+  <div class="ans-section">
+    <div class="sec-title">☐ 自我检查三项（孩子自评，家长核对是否真做了）</div>
+    <p>能跟着录音读下来 · 能说出课文大概在聊什么 · 有了自己的问题 —— 三项都勾了，说明这次预习到位了。</p>
+  </div>
+
+  <div class="ans-section">
+    <div class="sec-title">🌱 拓展角（选做，无标准答案）</div>
+    <p><b>生活联结：</b>用英语说出 2~3 种食物名即可，说对几个都行。<br>
+    <b>好奇延伸：</b>参考：chopsticks 来自 17 世纪末"洋泾浜英语"——广东话"快"（chop）+ stick（小木棍），意思是"快棍子"；knife and fork（刀叉）是西式餐具，筷子是中式餐具。</p>
+  </div>
+
+  <div class="ans-parent">
+    <b>给家长：</b>第 3~5 步的参考供你核对；孩子能跟读、能说出大意就达标，发音和拼写交给课堂慢慢来。
+  </div>
+
+</div>
+</body>
+</html>

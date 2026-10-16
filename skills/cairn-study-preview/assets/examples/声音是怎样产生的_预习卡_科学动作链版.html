@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>预习卡 · 声音是怎样产生的（科学动作链版）</title>
+<style>
+  @page { size: A4 portrait; margin: 10mm 12mm; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+    color: #2a3a4a; background: #f2f5f7; line-height: 1.5;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  .page {
+    width: 210mm; height: 297mm; margin: 0 auto;
+    background: #f9fcfe; padding: 10mm 12mm;
+    display: flex; flex-direction: column;
+  }
+
+  .header {
+    display: flex; align-items: center; gap: 12px;
+    padding-bottom: 8px; border-bottom: 2.5px solid #4a7a9e;
+    margin-bottom: 10px; flex-shrink: 0;
+  }
+  .header img {
+    width: 64px; height: 64px; object-fit: cover;
+    border-radius: 10px; border: 2px solid #9ab8cc;
+  }
+  .header-text h1 { font-size: 21px; color: #2a5a7a; letter-spacing: 1px; }
+  .header-text .meta { font-size: 12px; color: #5a7a8a; margin-top: 3px; }
+  .header-text .meta span {
+    display: inline-block; background: #e8f1f6;
+    padding: 2px 8px; border-radius: 10px; margin-right: 6px;
+  }
+
+  .steps {
+    flex: 1; display: flex; flex-direction: column;
+    justify-content: flex-start; gap: 14px;
+  }
+  .step { display: flex; gap: 10px; align-items: flex-start; }
+  .num {
+    flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%;
+    background: #4a7a9e; color: #fff; font-size: 13px; font-weight: bold;
+    display: flex; align-items: center; justify-content: center; margin-top: 2px;
+  }
+  .step-body { flex: 1; }
+  .step-body .title { font-size: 14.5px; font-weight: bold; color: #2a5a7a; }
+  .step-body .hint { font-size: 12.5px; color: #5a7a8a; margin-bottom: 3px; }
+  .write-line {
+    border-bottom: 1px dashed #a8bcc8; height: 26px; margin: 2px 0;
+  }
+  .write-line.short { width: 55%; }
+  .write-line.long { width: 100%; }
+
+  .checklist {
+    display: flex; gap: 16px; margin-top: 8px;
+    font-size: 12px; color: #5a7a8a; flex-shrink: 0;
+  }
+  .checklist span::before { content: "☐ "; font-size: 14px; }
+
+  .extra {
+    margin-top: 8px; background: #eef4f8;
+    border-left: 4px solid #9ab8cc; border-radius: 0 8px 8px 0;
+    padding: 8px 12px; flex-shrink: 0;
+  }
+  .extra .extra-title { font-size: 13px; font-weight: bold; color: #3a6a8a; margin-bottom: 4px; }
+  .extra-item {
+    font-size: 12px; color: #4a6a7a; margin-bottom: 4px;
+    padding-left: 18px; position: relative; line-height: 1.5;
+  }
+  .extra-item::before { content: "🔍"; position: absolute; left: 0; font-size: 12px; }
+
+  .parent {
+    margin-top: 6px; background: #f6f9fb;
+    border: 1px dashed #a8c0cc; border-radius: 8px;
+    padding: 6px 12px; font-size: 11px; color: #5a7a8a;
+    line-height: 1.5; flex-shrink: 0;
+  }
+  .parent b { color: #3a5a6a; }
+
+  @media print {
+    body { background: #fff; }
+    .page { margin: 0; padding: 0; width: auto; height: auto; }
+  }
+
+  /* ===== 参考答案页（家长核对版）===== */
+  .page { page-break-after: always; }
+  .page:last-child { page-break-after: auto; }
+  .answer-page {
+    background: #fbfaf6; gap: 10px;
+  }
+  .ans-header { padding-bottom: 8px; border-bottom: 2.5px solid #8a9a7a; flex-shrink: 0; }
+  .ans-header h2 { font-size: 17px; color: #4a5a3a; letter-spacing: 1px; }
+  .ans-header .ans-meta { font-size: 11.5px; color: #7a8a7a; margin-top: 2px; }
+  .ans-warn {
+    background: #fdf3e3; border: 1px dashed #d4b86a; border-radius: 8px;
+    padding: 6px 10px; font-size: 11.5px; color: #8a6a3a; line-height: 1.6; flex-shrink: 0;
+  }
+  .ans-block { display: flex; gap: 10px; align-items: flex-start; }
+  .ans-num {
+    flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%;
+    background: #8a9a7a; color: #fff; font-size: 12px; font-weight: bold;
+    display: flex; align-items: center; justify-content: center; margin-top: 2px;
+  }
+  .ans-body { flex: 1; }
+  .ans-q { font-size: 12.5px; font-weight: bold; color: #4a5a3a; }
+  .ans-a { font-size: 12px; color: #5a6a5a; line-height: 1.6; margin-top: 2px; }
+  .ans-a b { color: #6b7a5a; }
+  .ans-tag {
+    display: inline-block; font-size: 10.5px; padding: 1px 8px; border-radius: 8px;
+    margin-left: 6px; vertical-align: middle;
+  }
+  .ans-tag.obj { background: #e4ecda; color: #4a6a3a; }
+  .ans-tag.open { background: #f0e8d8; color: #8a6a3a; }
+  .ans-section {
+    background: #f2f4ec; border-radius: 8px; padding: 8px 12px; flex-shrink: 0;
+  }
+  .ans-section .sec-title { font-size: 12.5px; font-weight: bold; color: #4a6a3a; margin-bottom: 4px; }
+  .ans-section p { font-size: 11.5px; color: #5a6a5a; line-height: 1.6; }
+  .ans-parent {
+    background: #faf8f3; border: 1px dashed #c9b99a; border-radius: 8px;
+    padding: 6px 12px; font-size: 11.5px; color: #7a6a4a; line-height: 1.6; flex-shrink: 0;
+  }
+  .ans-parent b { color: #6b5a3a; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ▼ 顶部 -->
+  <div class="header">
+    <img src="https://aka.doubaocdn.com/s/NxEdACj86E" alt="声音是怎样产生的配图">
+    <div class="header-text">
+      <h1>📖 预习卡</h1>
+      <div class="meta">
+        <span>《声音是怎样产生的》</span>
+        <span>教科版科学 · 四年级上册 · 第一单元</span>
+        <span>⏱ 约15-20分钟</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ▼ 六步动作链：看→读→圈→想→说→问（科学版） -->
+  <div class="steps">
+    <div class="step">
+      <div class="num">1</div>
+      <div class="step-body">
+        <div class="title">看 · 看课题，猜一猜</div>
+        <div class="hint">课题叫《声音是怎样产生的》。猜猜：声音可能是怎么来的？你平时听到的"叮咚""嗡嗡"是怎么出现的？</div>
+        <div class="write-line long"></div>
+        <div class="write-line long"></div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="num">2</div>
+      <div class="step-body">
+        <div class="title">读 · 读课文，找现象</div>
+        <div class="hint">读一读课文：它讲了哪些"发出声音"的事？（比如拨橡皮筋、敲音叉）每种情况下物体在做什么？</div>
+        <div class="write-line long"></div>
+        <div class="write-line long"></div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="num">3</div>
+      <div class="step-body">
+        <div class="title">圈 · 圈出奇怪的地方</div>
+        <div class="hint">哪里让你觉得奇怪？圈出来，比如"为什么敲鼓时鼓面会跳""为什么手一按声音就停了"。</div>
+        <div class="write-line long"></div>
+        <div class="write-line long"></div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="num">4</div>
+      <div class="step-body">
+        <div class="title">想 · 猜猜实验会怎样</div>
+        <div class="hint">如果做课文里的实验（拨橡皮筋 / 敲音叉），你觉得会发生什么？先猜一猜，写下你的猜想。</div>
+        <div class="write-line long"></div>
+        <div class="write-line short"></div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="num">5</div>
+      <div class="step-body">
+        <div class="title">说 · 联系生活</div>
+        <div class="hint">想一想：你生活里在哪见过"发声的东西"？（比如敲桌子、拉琴、说话时喉咙）它们发声时有什么共同点？</div>
+        <div class="write-line long"></div>
+        <div class="write-line long"></div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="num">6</div>
+      <div class="step-body">
+        <div class="title">问 · 最想验证什么</div>
+        <div class="hint">写下你最想验证的一个问题——比如"所有声音都是'动'出来的吗？"，明天带去课堂做实验。</div>
+        <div class="write-line long"></div>
+        <div class="write-line long"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ▼ 自我检查（开放性勾选） -->
+  <div class="checklist">
+    <span>我能说出课文讲了哪些发声的事</span>
+    <span>我能说出自己的猜想</span>
+    <span>我有了自己的问题</span>
+  </div>
+
+  <!-- ▼ 拓展角（选做） -->
+  <div class="extra">
+    <div class="extra-title">🔍 拓展角（选做）</div>
+    <div class="extra-item">生活联结：今晚找出 3 个"会发声"的东西（门铃、手机、水龙头…），猜猜它们发声时哪里在"动"？明天和同学对对答案。</div>
+    <div class="extra-item">好奇延伸：鸟叫、蝉鸣、雷声……自然界的声音是怎么来的？查查"动物发声"和"雷声"是不是也在"动"。</div>
+  </div>
+
+  <div class="parent">
+    <b>给家长：</b>孩子能说出自己的猜想（哪怕不对）、能提出问题，就达到这次预习的目标了，不用提前告诉"振动"这个答案。<br>
+    一起聊了吗？☐ 聊了（可画星 ☆☆☆）
+  </div>
+
+</div>
+
+<!-- ===== 第2页：参考答案（家长核对版）===== -->
+<div class="page answer-page">
+
+  <div class="ans-header">
+    <h2>📄 参考答案 · 家长核对版</h2>
+    <div class="ans-meta">《声音是怎样产生的》· 教科版科学 · 四年级上册 · 第一单元</div>
+  </div>
+
+  <div class="ans-warn">⚠️ 先让孩子独立完成预习，再翻开本页对照；不要让孩子照着抄。主观题没有唯一答案，孩子答到"方向"就算达到目标。</div>
+
+  <div class="ans-block">
+    <div class="ans-num">1</div>
+    <div class="ans-body">
+      <div class="ans-q">看 · 猜一猜 <span class="ans-tag open">无唯一答案</span></div>
+      <div class="ans-a"><b>核对要点：</b>孩子能往"东西在动 / 振动 / 碰撞"方向猜即可，不用准确说出"振动"。</div>
+    </div>
+  </div>
+
+  <div class="ans-block">
+    <div class="ans-num">2</div>
+    <div class="ans-body">
+      <div class="ans-q">读 · 找发声的事 <span class="ans-tag obj">参考</span></div>
+      <div class="ans-a">课文里的例子：拨橡皮筋、拨钢尺、敲鼓（鼓面跳动）、敲音叉（嗡嗡响）。<b>共同点：发声时物体都在"振动"。</b></div>
+    </div>
+  </div>
+
+  <div class="ans-block">
+    <div class="ans-num">3</div>
+    <div class="ans-body">
+      <div class="ans-q">圈 · 圈出奇怪的地方 <span class="ans-tag open">无唯一答案</span></div>
+      <div class="ans-a"><b>核对要点：</b>孩子能说出哪里奇怪即可（如"为什么手一按声音就停了"）。奇怪的问题正是课堂要解决的。</div>
+    </div>
+  </div>
+
+  <div class="ans-block">
+    <div class="ans-num">4</div>
+    <div class="ans-body">
+      <div class="ans-q">想 · 猜实验 <span class="ans-tag open">无唯一答案</span></div>
+      <div class="ans-a"><b>核对要点：</b>孩子能猜"会动 / 会响 / 纸屑会跳"即可。猜对猜错不重要，带着猜想去做实验才有意思。</div>
+    </div>
+  </div>
+
+  <div class="ans-block">
+    <div class="ans-num">5</div>
+    <div class="ans-body">
+      <div class="ans-q">说 · 联系生活 <span class="ans-tag obj">参考</span></div>
+      <div class="ans-a"><b>共同点：都在"动"。</b>敲桌子手能感到桌子在震；说话时手摸喉咙能感到声带在震；拉琴时琴弦在颤。</div>
+    </div>
+  </div>
+
+  <div class="ans-block">
+    <div class="ans-num">6</div>
+    <div class="ans-body">
+      <div class="ans-q">问 · 最想验证什么 <span class="ans-tag open">无唯一答案</span></div>
+      <div class="ans-a"><b>核对要点：</b>孩子能写下想验证的问题即可（如"所有声音都是'动'出来的吗？"），明天带去课堂做实验。</div>
+    </div>
+  </div>
+
+  <div class="ans-section">
+    <div class="sec-title">☐ 自我检查三项（孩子自评，家长核对是否真做了）</div>
+    <p>能说出课文讲了哪些发声的事 · 能说出自己的猜想 · 有了自己的问题 —— 三项都勾了，说明这次预习到位了。</p>
+  </div>
+
+  <div class="ans-section">
+    <div class="sec-title">🌱 拓展角（选做，无标准答案）</div>
+    <p><b>生活联结：</b>参考：门铃响——里面的小锤在敲铃；手机响——扬声器的振膜在振动；水龙头哗哗响——水流在冲击。孩子猜的方向接近"在动"就好。<br>
+    <b>好奇延伸：</b>参考：鸟叫靠鸣管/声带振动，蝉鸣靠鼓膜快速振动，雷声是空气剧烈振动——自然界的声音也来自"动"。</p>
+  </div>
+
+  <div class="ans-parent">
+    <b>给家长：</b>"振动"是这课要得出的结论，供你心里有数；孩子能猜、能问就达标，结论让课堂实验来揭晓。
+  </div>
+
+</div>
+</body>
+</html>

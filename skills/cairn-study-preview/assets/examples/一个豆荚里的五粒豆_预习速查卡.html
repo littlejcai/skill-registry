@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>预习速查卡 · 一个豆荚里的五粒豆</title>
+<style>
+  @page { size: A4 portrait; margin: 10mm 12mm; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+    color: #2c3e2d; background: #f5f3ee; line-height: 1.45;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  @media print {
+    body { background: #fff; }
+  }
+
+  .page {
+    width: 210mm; min-height: 296mm; margin: 0 auto;
+    background: #fffef9; padding: 10mm 12mm;
+    display: flex; flex-direction: column;
+  }
+  .header {
+    display: flex; align-items: center; gap: 10px;
+    padding-bottom: 8px; border-bottom: 2.5px solid #6a994e;
+    margin-bottom: 12px;
+  }
+  .header img {
+    width: 56px; height: 56px; object-fit: cover;
+    border-radius: 10px; border: 2px solid #a7c957;
+  }
+  .header-text h1 { font-size: 20px; color: #386641; letter-spacing: 1px; }
+  .header-text .meta { font-size: 13px; color: #6b7a6b; margin-top: 2px; }
+  .header-text .meta span {
+    display: inline-block; background: #e8f0e3;
+    padding: 1px 8px; border-radius: 9px; margin-right: 5px;
+  }
+
+  .sec-a {
+    background: #f0f5e8; border: 1px solid #d4e3c4; border-radius: 10px;
+    padding: 12px 14px; margin-bottom: 12px;
+  }
+  .sec-title { font-size: 14.5px; font-weight: bold; color: #4a6a3a; margin-bottom: 8px; }
+  .task-row { display: flex; gap: 9px; align-items: flex-start; margin-bottom: 10px; font-size: 14px; color: #4a5a4a; }
+  .task-row .t-num {
+    flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%;
+    background: #6a994e; color: #fff; font-size: 13px; font-weight: bold;
+    display: flex; align-items: center; justify-content: center; margin-top: 1px;
+  }
+  .task-row .t-body { flex: 1; }
+  .task-row .t-body b { color: #386641; }
+  .task-row .t-check { flex-shrink: 0; font-size: 15px; color: #6a994e; }
+  .task-row .t-check::before { content: "☐ "; }
+  .write-line { border-bottom: 1.5px dashed #b0c4a8; height: 26px; margin: 4px 0 2px 30px; }
+
+  .sec-b { flex: 1; display: flex; flex-direction: column; border: 1px solid #e0e8d8; border-radius: 10px; padding: 12px 14px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 14px; align-content: start; }
+  .kv {
+    background: #f7faf1; border: 1px solid #dde8cd; border-radius: 8px;
+    padding: 10px 12px; display: flex; flex-direction: column;
+  }
+  .kv-wide { grid-column: 1 / -1; }
+  .kv .k { font-size: 14px; font-weight: bold; color: #4a5a3a; margin-bottom: 5px; }
+  .kv .v { font-size: 13.5px; color: #5a6a5a; line-height: 1.65; }
+  .kv .v .ref { color: #8a9a7a; font-size: 12.5px; }
+  .kv .write-line { border-bottom: 1.5px dashed #cfdfc0; margin: 6px 0 0 0; }
+  .chip-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 2px; }
+  .chip {
+    font-size: 13px; background: #eef3e7; border-radius: 6px;
+    padding: 3px 10px; color: #4a5a3a; border: 1px solid #dce6d0;
+  }
+  .note-line {
+    font-size: 13px; color: #7a8a6a; border-top: 1px dotted #c9d6b8;
+    padding-top: 8px; margin-top: 10px; line-height: 1.6;
+  }
+  .note-line b { color: #5a6a4a; }
+
+  .sec-c { margin-top: 12px; }
+  .grid-c { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 14px; }
+  .c-box {
+    background: #fafdf6; border: 1px solid #dce8cc; border-radius: 8px;
+    padding: 10px 12px; display: flex; flex-direction: column;
+  }
+  .c-box .k { font-size: 13.5px; font-weight: bold; color: #4a6a3a; margin-bottom: 4px; }
+  .c-box .write-line { border-bottom: 1.5px dashed #cfdfc0; margin: 0; }
+
+  .footer-note {
+    margin-top: 12px; background: #faf8f3;
+    border: 1px dashed #c9b99a; border-radius: 10px;
+    padding: 6px 12px; font-size: 12.5px; color: #8a7a5a; line-height: 1.5;
+  }
+  .footer-note b { color: #6b5a3a; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ▼ 顶部 -->
+  <div class="header">
+    <img src="https://aka.doubaocdn.com/s/Vlfxz297MH" alt="一个豆荚里的五粒豆配图">
+    <div class="header-text">
+      <h1>📖 预习速查卡（速查版）</h1>
+      <div class="meta">
+        <span>《一个豆荚里的五粒豆》</span>
+        <span>人教版语文 · 四年级上册 · 第二单元</span>
+        <span>⏱ 10分钟 · 一页搞定</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ▼ A区：快速预习任务 -->
+  <div class="sec-a">
+    <div class="sec-title">① 快速预习任务（先做这 3 步）</div>
+    <div class="task-row">
+      <div class="t-num">1</div>
+      <div class="t-body"><b>读</b>：朗读课文一遍，圈出难字生词。</div>
+      <div class="t-check"></div>
+    </div>
+    <div class="task-row">
+      <div class="t-num">2</div>
+      <div class="t-body"><b>想</b>：五粒豆各自去了哪里？先猜一猜，写下你的猜想：</div>
+      <div class="t-check"></div>
+    </div>
+    <div class="write-line"></div>
+    <div class="write-line"></div>
+    <div class="task-row">
+      <div class="t-num">3</div>
+      <div class="t-body"><b>说</b>：对照下面速查，用自己的话说说每粒豆的去向：</div>
+      <div class="t-check"></div>
+    </div>
+    <div class="write-line"></div>
+    <div class="write-line"></div>
+  </div>
+
+  <!-- ▼ B区：本课重点速查（长内容占整行，短内容并排） -->
+  <div class="sec-b">
+    <div class="sec-title">② 本课重点速查（语文版）</div>
+    <div class="grid">
+
+      <div class="kv kv-wide">
+        <div class="k">▍重点词义（参考，以课本/词典为准）</div>
+        <div class="v">
+          <b>僵硬</b>（肢体）不能活动 ｜ <b>预感</b> 事先的感觉 ｜ <b>洋溢</b>（情绪、气氛等）充分流露 ｜ <b>恐怕</b> 表示估计兼担心
+        </div>
+      </div>
+
+      <div class="kv kv-wide">
+        <div class="k">▍生字 / 易错字（先描后写）</div>
+        <div class="chip-row">
+          <span class="chip">豌</span><span class="chip">按</span><span class="chip">僵</span><span class="chip">苔</span><span class="chip">囚</span><span class="chip">框</span><span class="chip">溢</span><span class="chip">预</span><span class="chip">揭</span>
+        </div>
+      </div>
+
+      <div class="kv">
+        <div class="k">▍重点句</div>
+        <div class="v">句子的深层含义<b>课堂精讲</b>，先自己猜猜作者想说什么：</div>
+        <div class="write-line"></div>
+      </div>
+
+      <div class="kv">
+        <div class="k">▍课文信息</div>
+        <div class="v">全文共 <b>24</b> 个自然段（以课本为准）。读完可以数一数。</div>
+        <div class="write-line"></div>
+      </div>
+
+    </div>
+    <div class="note-line">
+      <b>给孩子：</b>先自己想再对速查，猜错没关系——带着你的问题去上课。<br>
+      <b>给家长：</b>词义以课本/词典为准；重点句含义留给课堂精讲，预习不剧透。
+    </div>
+  </div>
+
+  <!-- ▼ C区：我的收获 & 我的问题 -->
+  <div class="sec-c">
+    <div class="sec-title">③ 我的收获 & 我的问题（上课带着去）</div>
+    <div class="grid-c">
+      <div class="c-box">
+        <div class="k">🌟 这课我最想记住的是</div>
+        <div class="write-line"></div>
+        <div class="write-line"></div>
+      </div>
+      <div class="c-box">
+        <div class="k">❓ 上课我要问</div>
+        <div class="write-line"></div>
+        <div class="write-line"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-note">
+    ✅ 三项任务都勾了 + 速查看过一遍 = 这课预习完成。带着"我的问题"去上课。
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>探索卡 · 沏茶问题</title>
+<style>
+  @page { size: A4 portrait; margin: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+    color: #4a2e1a; background: #efe9e0; line-height: 1.9;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  .page {
+    width: 210mm; min-height: 296mm; margin: 10px auto;
+    background: #fffdf8; position: relative; overflow: hidden;
+    page-break-after: always; padding: 18mm 20mm 20mm 20mm;
+  }
+  .page:last-child { page-break-after: auto; }
+
+  @media print {
+    body { background: #fff; }
+    .page { margin: 0; }
+  }
+
+  /* v3：动笔区 */
+  .write-line { border-bottom: 1.5px dashed #b0c4a8; height: 26px; margin: 6px 0; }
+  .quiz-pick { margin-top: 10px; padding-top: 8px; border-top: 1px dashed #d4b86a; }
+  .quiz-pick .k { font-size: 14px; font-weight: bold; color: #8a6a2a; margin-bottom: 4px; }
+  .footer {
+    position: absolute; bottom: 8mm; left: 20mm; right: 20mm;
+    display: flex; justify-content: space-between;
+    font-size: 11px; color: #b8a898;
+  }
+  .cover-head { margin-bottom: 20px; }
+  .cover-head .emoji { font-size: 56px; margin-bottom: 10px; }
+  .cover-head h1 { font-size: 28px; color: #8a4a1a; line-height: 1.3; margin-bottom: 8px; }
+  .cover-head .meta { font-size: 13px; color: #8a6a4a; }
+  .cover-head .meta span {
+    display: inline-block; background: #fbeedd;
+    padding: 3px 12px; border-radius: 12px; margin-right: 6px;
+  }
+  .hook {
+    background: #c97a3a; color: #fff; padding: 20px 24px;
+    border-radius: 12px; margin-bottom: 20px;
+  }
+  .hook .label { font-size: 12px; opacity: 0.85; letter-spacing: 2px; margin-bottom: 8px; }
+  .hook p { font-size: 17px; line-height: 1.8; }
+  .sec-title {
+    font-size: 17px; font-weight: bold; color: #8a4a1a;
+    margin: 18px 0 8px 0; padding-left: 10px;
+    border-left: 4px solid #c97a3a;
+  }
+  .body p { font-size: 15px; color: #4a3a2a; margin-bottom: 10px; }
+  .body b { color: #2a1a0a; }
+  .tag {
+    display: inline-block; font-size: 11px; font-weight: bold;
+    padding: 2px 10px; border-radius: 10px; margin-bottom: 4px;
+  }
+  .tag.real { background: #d4e8c8; color: #3a6a2a; }
+  .tag.cold { background: #f0e0c8; color: #8a5a2a; }
+  .tag.truth { background: #d8e4f0; color: #2a5a8a; }
+  .tag.tip { background: #f0d8e0; color: #8a3a5a; }
+  .rows {
+    background: #faf8f3; border-radius: 8px; padding: 12px 16px;
+    margin: 8px 0; font-size: 14px; line-height: 1.8;
+  }
+  .rows .row { display: flex; gap: 8px; margin-bottom: 4px; }
+  .rows .row:last-child { margin-bottom: 0; }
+  .rows .who { font-weight: bold; color: #8a4a1a; min-width: 90px; flex-shrink: 0; }
+  .quiz {
+    background: #fdf6e8; border-radius: 8px; padding: 14px 18px;
+    margin: 8px 0; font-size: 14.5px; line-height: 1.8;
+  }
+  .quiz .options { margin-top: 8px; }
+  .quiz .opt { padding: 2px 0; }
+  .quiz .answer {
+    margin-top: 10px; padding-top: 8px; border-top: 1px dashed #d4b86a;
+    color: #8a6a2a; font-size: 13.5px;
+  }
+  .res {
+    display: flex; gap: 10px; align-items: flex-start;
+    font-size: 14px; padding: 8px 0; line-height: 1.7;
+    border-bottom: 1px dotted #ddd0bc;
+  }
+  .res:last-child { border-bottom: none; }
+  .res .icon { font-size: 20px; flex-shrink: 0; }
+  .res.detail { flex-direction: column; }
+  .res.detail .res-head { display: flex; gap: 10px; align-items: flex-start; }
+  .res.detail .steps-detail {
+    margin-top: 6px; padding-left: 30px; font-size: 13px; color: #6a5a4a;
+    line-height: 1.8;
+  }
+  .parent {
+    margin-top: 18px; background: #faf6ef; border-radius: 8px;
+    padding: 14px 18px; font-size: 12.5px; color: #8a6a4a; line-height: 1.8;
+  }
+  .parent b { color: #6b4a2a; }
+</style>
+</head>
+<body>
+
+<!-- ===== 第1页 ===== -->
+<div class="page">
+  <div class="cover-head">
+    <div class="emoji">⏱️</div>
+    <h1>沏茶问题（数学广角——优化）</h1>
+    <div class="meta">
+      <span>人教版数学 · 四年级上册 · 第八单元</span>
+    </div>
+  </div>
+
+  <div class="hook">
+    <div class="label">🌱 好奇钩子</div>
+    <p>烧水要 8 分钟，洗茶杯要 2 分钟——先做哪件事，才能让客人最快喝上茶？"省时间"这件事，还能用数学算出来？</p>
+  </div>
+
+  <div class="sec-title">背后的故事</div>
+  <div class="body">
+    <p><span class="tag real">真实</span><br>
+    <b>数学家华罗庚的"统筹法"。</b>1965 年，数学家华罗庚把国外的"关键线路法"提炼成中国式"统筹法"，还写了一本几乎全是大白话的小册子《统筹方法平话及补充》，亲自带队去工厂试点，教大家把几件事同时安排、用最少时间做完。</p>
+    <p><span class="tag cold">冷知识</span><br>
+    <b>"运筹"来自《史记》。</b>"运筹帷幄之中，决胜千里之外"——意思是"在帐篷里算好，就能赢在外面"。运筹学，就是研究"怎么安排最划算"的数学。</p>
+    <p><span class="tag truth">真相</span><br>
+    <b>"双法"造福了很多行业。</b>华罗庚推广的统筹法、优选法，后来应用到 20 多个省、化工电子钢铁等许多行业——不增加设备，只是把顺序安排好，效率就上去了。</p>
+  </div>
+
+  <div class="sec-title">沏茶要做的事（例1）</div>
+  <div class="rows">
+    <div class="row"><span class="who">洗水壶</span><span>1 分钟</span></div>
+    <div class="row"><span class="who">接水</span><span>1 分钟</span></div>
+    <div class="row"><span class="who">烧水</span><span>8 分钟</span></div>
+    <div class="row"><span class="who">洗茶杯</span><span>2 分钟</span></div>
+    <div class="row"><span class="who">找茶叶</span><span>1 分钟</span></div>
+    <div class="row"><span class="who">沏茶</span><span>1 分钟</span></div>
+  </div>
+
+  <div class="footer"><span>探索卡</span><span>1 / 3</span></div>
+</div>
+
+<!-- ===== 第2页 ===== -->
+<div class="page">
+  <div class="sec-title">想一想</div>
+  <div class="quiz">
+    <b>🤔 先做个小选择：</b><br><br>
+    小明沏茶要做上面 6 件事。你觉得最短需要几分钟？
+    <div class="options">
+      <div class="opt">A. 14 分钟（一件一件挨着做）</div>
+      <div class="opt">B. 11 分钟（烧水时同时洗茶杯、找茶叶）</div>
+      <div class="opt">C. 9 分钟（所有事都同时做）</div>
+      <div class="opt">D. 先自己算一算再选</div>
+    </div>
+    <div class="quiz-pick">
+      <div class="k">✏️ 你选：☐ A　☐ B　☐ C　☐ D —— 为什么？</div>
+      <div class="write-line"></div>
+      <div class="write-line"></div>
+    </div>
+    <div class="answer">
+      💡 B 最短：洗水壶 → 接水 → 烧水（同时洗茶杯、找茶叶）→ 沏茶，一共 1+1+8+1=11 分钟。C 不可能——水没烧好就没法沏茶，"同时做"要挑互不耽误的事。你的排法呢？
+    </div>
+  </div>
+
+  <div class="sec-title">生活联结</div>
+  <div class="body">
+    <p>你早上出门前，有没有"同时做两件事"（烧水时刷牙、等车时穿外套）？挑一次出门，算一算你省下了几分钟。</p>
+  </div>
+  <div class="write-line"></div>
+
+  <div class="sec-title">课文和原作品的对照</div>
+  <div class="body">
+    <p><span class="tag tip">对照</span><br>
+    <b>课本里的沏茶问题，就是"统筹法"的最小例子。</b>课堂上你会学到把"先做什么、再做什么"画成一张流程图——这张图，就是华罗庚统筹法的小小缩影。</p>
+  </div>
+
+  <div class="footer"><span>想一想 · 联结</span><span>2 / 3</span></div>
+</div>
+
+<!-- ===== 第3页 ===== -->
+<div class="page">
+  <div class="sec-title">上课任务</div>
+  <div class="body">
+    <p>上课时看看：课本怎么把"先做什么、再做什么"画成流程图？跟你的排法比一比，谁的顺序更省时间？</p>
+  </div>
+  <div class="write-line"></div>
+  <div class="write-line"></div>
+
+  <div class="sec-title">想深入 · 资源库</div>
+  <div class="res"><span class="icon">📖</span><div><b>《华罗庚的故事》（少儿传记，图书馆/电商有多个版本）</b>看看这位数学家怎么把数学"送进"工厂。</div></div>
+  <div class="res"><span class="icon">📺</span><div><b>视频平台搜"华罗庚 统筹法"</b>看一段他把统筹法带进工厂的真实故事。</div></div>
+  <div class="res detail">
+    <div class="res-head"><span class="icon">🌱</span><div><b>动手：给全家排一张"最快出门清单"</b></div></div>
+    <div class="steps-detail">① 列出上学前要做的事和时间（穿衣、刷牙、吃饭、拿书包…）<br>② 圈出哪些可以"同时做"<br>③ 算一算你的最快出门时间</div>
+  </div>
+  <div class="res"><span class="icon">🔍</span><div><b>延伸：查查"运筹帷幄"最早是谁说的</b>《史记》里刘邦夸奖哪位谋士时用了这句话？</div></div>
+
+  <div class="parent">
+    <b>给家长：</b>这课"播种"了统筹优化思想和华罗庚其人。不用提前讲"最优解"，孩子能自己排顺序、发现"同时做"就很好。
+  </div>
+
+  <div class="footer"><span>上课任务 · 资源库 · 给家长</span><span>3 / 3</span></div>
+</div>
+
+</body>
+</html>

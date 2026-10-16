@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>探索卡 · 声音是怎样产生的</title>
+<style>
+  @page { size: A4 portrait; margin: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+    color: #2a3a4a; background: #e4e9ee; line-height: 1.9;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  .page {
+    width: 210mm; min-height: 296mm; margin: 10px auto;
+    background: #f9fcfe; position: relative; overflow: hidden;
+    page-break-after: always; padding: 18mm 20mm 20mm 20mm;
+  }
+  .page:last-child { page-break-after: auto; }
+
+  @media print {
+    body { background: #fff; }
+    .page { margin: 0; }
+  }
+
+  /* v3：动笔区 */
+  .write-line { border-bottom: 1.5px dashed #b0c4a8; height: 26px; margin: 6px 0; }
+  .quiz-pick { margin-top: 10px; padding-top: 8px; border-top: 1px dashed #d4b86a; }
+  .quiz-pick .k { font-size: 14px; font-weight: bold; color: #8a6a2a; margin-bottom: 4px; }
+  .footer {
+    position: absolute; bottom: 8mm; left: 20mm; right: 20mm;
+    display: flex; justify-content: space-between;
+    font-size: 11px; color: #98aab8;
+  }
+  .cover-head { margin-bottom: 20px; }
+  .cover-head .emoji { font-size: 56px; margin-bottom: 10px; }
+  .cover-head h1 { font-size: 28px; color: #2a5a7a; line-height: 1.3; margin-bottom: 8px; }
+  .cover-head .meta { font-size: 13px; color: #5a7a8a; }
+  .cover-head .meta span {
+    display: inline-block; background: #e8f1f6;
+    padding: 3px 12px; border-radius: 12px; margin-right: 6px;
+  }
+  .hook {
+    background: #4a7a9e; color: #fff; padding: 20px 24px;
+    border-radius: 12px; margin-bottom: 20px;
+  }
+  .hook .label { font-size: 12px; opacity: 0.85; letter-spacing: 2px; margin-bottom: 8px; }
+  .hook p { font-size: 17px; line-height: 1.8; }
+  .sec-title {
+    font-size: 17px; font-weight: bold; color: #2a5a7a;
+    margin: 18px 0 8px 0; padding-left: 10px;
+    border-left: 4px solid #4a7a9e;
+  }
+  .body p { font-size: 15px; color: #3a4a5a; margin-bottom: 10px; }
+  .body b { color: #1a2a3a; }
+  .tag {
+    display: inline-block; font-size: 11px; font-weight: bold;
+    padding: 2px 10px; border-radius: 10px; margin-bottom: 4px;
+  }
+  .tag.real { background: #d4e8c8; color: #3a6a2a; }
+  .tag.cold { background: #f0e0c8; color: #8a5a2a; }
+  .tag.truth { background: #d8e4f0; color: #2a5a8a; }
+  .tag.tip { background: #f0d8e0; color: #8a3a5a; }
+  .rows {
+    background: #f2f7fa; border-radius: 8px; padding: 12px 16px;
+    margin: 8px 0; font-size: 14px; line-height: 1.8;
+  }
+  .rows .row { display: flex; gap: 8px; margin-bottom: 4px; }
+  .rows .row:last-child { margin-bottom: 0; }
+  .rows .who { font-weight: bold; color: #2a5a7a; min-width: 90px; flex-shrink: 0; }
+  .quiz {
+    background: #fdf6e8; border-radius: 8px; padding: 14px 18px;
+    margin: 8px 0; font-size: 14.5px; line-height: 1.8;
+  }
+  .quiz .options { margin-top: 8px; }
+  .quiz .opt { padding: 2px 0; }
+  .quiz .answer {
+    margin-top: 10px; padding-top: 8px; border-top: 1px dashed #d4b86a;
+    color: #8a6a2a; font-size: 13.5px;
+  }
+  .res {
+    display: flex; gap: 10px; align-items: flex-start;
+    font-size: 14px; padding: 8px 0; line-height: 1.7;
+    border-bottom: 1px dotted #c8d4dc;
+  }
+  .res:last-child { border-bottom: none; }
+  .res .icon { font-size: 20px; flex-shrink: 0; }
+  .res.detail { flex-direction: column; }
+  .res.detail .res-head { display: flex; gap: 10px; align-items: flex-start; }
+  .res.detail .steps-detail {
+    margin-top: 6px; padding-left: 30px; font-size: 13px; color: #5a6a7a;
+    line-height: 1.8;
+  }
+  .parent {
+    margin-top: 18px; background: #f3f7fa; border-radius: 8px;
+    padding: 14px 18px; font-size: 12.5px; color: #5a7a8a; line-height: 1.8;
+  }
+  .parent b { color: #3a5a6a; }
+</style>
+</head>
+<body>
+
+<!-- ===== 第1页 ===== -->
+<div class="page">
+  <div class="cover-head">
+    <div class="emoji">🔊</div>
+    <h1>声音是怎样产生的</h1>
+    <div class="meta">
+      <span>教科版科学 · 四年级上册 · 第一单元</span>
+    </div>
+  </div>
+
+  <div class="hook">
+    <div class="label">🌱 好奇钩子</div>
+    <p>如果月球上有人在你面前敲鼓，你能听到声音吗？——声音到底是怎么"跑"到我们耳朵里的？</p>
+  </div>
+
+  <div class="sec-title">背后的故事</div>
+  <div class="body">
+    <p><span class="tag real">真实</span><br>
+    <b>声音来自"振动"。</b>拨动琴弦、敲鼓、说话——发声的东西都在快速来回"振动"。你一开口，喉咙里的声带也在振动，这才有了声音。</p>
+    <p><span class="tag cold">冷知识</span><br>
+    <b>振动是"摸得到"的。</b>把手放在喉咙上说话，能感到震动；把手指贴在鼓面上敲鼓，也能感到鼓面在颤。摸一摸，你就摸到了声音的源头。</p>
+    <p><span class="tag truth">真相</span><br>
+    <b>声音要有"介质"才能传。</b>空气、水、固体都能传声，真空不行。月球上没有空气，宇航员面对面也听不到对方，只能靠无线电（央视科普确认）。</p>
+  </div>
+
+  <div class="sec-title">哪些东西在"动"</div>
+  <div class="rows">
+    <div class="row"><span class="who">橡皮筋</span><span>拨动时来回振动 → 发出声音</span></div>
+    <div class="row"><span class="who">鼓面</span><span>敲击时上下颤动 → 发出声音</span></div>
+    <div class="row"><span class="who">音叉</span><span>敲击后嗡嗡振动 → 发出声音</span></div>
+    <div class="row"><span class="who">喉咙</span><span>说话时声带振动 → 发出声音</span></div>
+  </div>
+
+  <div class="footer"><span>探索卡</span><span>1 / 3</span></div>
+</div>
+
+<!-- ===== 第2页 ===== -->
+<div class="page">
+  <div class="sec-title">想一想</div>
+  <div class="quiz">
+    <b>🤔 先做个小选择：</b><br><br>
+    下面哪种情况，你听不到声音？
+    <div class="options">
+      <div class="opt">A. 教室外有人敲鼓（空气传声）</div>
+      <div class="opt">B. 游泳时头埋在水里，听岸上的人喊话（水传声）</div>
+      <div class="opt">C. 把耳朵贴在铁轨上，听远处开来的火车（固体传声）</div>
+      <div class="opt">D. 在月球上，两个宇航员面对面说话（真空）</div>
+    </div>
+    <div class="quiz-pick">
+      <div class="k">✏️ 你选：☐ A　☐ B　☐ C　☐ D —— 为什么？</div>
+      <div class="write-line"></div>
+      <div class="write-line"></div>
+    </div>
+    <div class="answer">
+      💡 D——月球上没有空气，声音没有"介质"可传，传不过去。A、B、C 分别靠空气、水、铁轨把声音送到耳朵里。声音要"有东西托着"才能跑。
+    </div>
+  </div>
+
+  <div class="sec-title">生活联结</div>
+  <div class="body">
+    <p>你睡觉把耳朵贴在枕头上，能听见自己"咕咚咕咚"的心跳吗？那是声音在枕头、床这些固体里传——固体传声，又快又清楚。</p>
+  </div>
+  <div class="write-line"></div>
+
+  <div class="sec-title">课文和原作品的对照</div>
+  <div class="body">
+    <p><span class="tag tip">对照</span><br>
+    <b>课本里的实验，就是"振动→声音"的证据。</b>课堂上你会亲手做橡皮筋、钢尺的实验——看看声音是怎么"长"出来的。</p>
+  </div>
+
+  <div class="footer"><span>想一想 · 联结</span><span>2 / 3</span></div>
+</div>
+
+<!-- ===== 第3页 ===== -->
+<div class="page">
+  <div class="sec-title">上课任务</div>
+  <div class="body">
+    <p>上课做实验时留意：橡皮筋、钢尺、鼓面发声时，你怎么"看见"它们在振动？（比如撒纸屑、放水珠）把你的猜想和实验结果对一对。</p>
+  </div>
+  <div class="write-line"></div>
+  <div class="write-line"></div>
+
+  <div class="sec-title">想深入 · 资源库</div>
+  <div class="res"><span class="icon">📺</span><div><b>视频平台搜"声音振动实验"</b>看纸屑在鼓面上"跳舞"的实验，亲眼看看振动。</div></div>
+  <div class="res"><span class="icon">📖</span><div><b>《十万个为什么》（少年儿童出版社，找声学/物理分册）</b>翻翻"声音是怎么来的"这一章。</div></div>
+  <div class="res detail">
+    <div class="res-head"><span class="icon">🌱</span><div><b>动手：自制"纸屑跳舞"小鼓</b></div></div>
+    <div class="steps-detail">① 用保鲜膜绷紧在碗口，做成"鼓面"<br>② 在鼓面上撒几粒碎纸屑<br>③ 在旁边敲桌子或大声说话，看纸屑会不会跳</div>
+  </div>
+  <div class="res"><span class="icon">🔍</span><div><b>延伸：查查"宇航员在太空怎么互相说话"</b>太空是真空，他们靠什么交流？</div></div>
+
+  <div class="parent">
+    <b>给家长：</b>这课"播种"了振动概念和"声音需要介质"。不用提前讲结论，孩子带着"声音要'动'才出来"的猜想去上课就够了。
+  </div>
+
+  <div class="footer"><span>上课任务 · 资源库 · 给家长</span><span>3 / 3</span></div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>预习卡 · 沏茶问题（数学动作链版）</title>
+<style>
+  @page { size: A4 portrait; margin: 10mm 12mm; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+    color: #4a2e1a; background: #f7f3ee; line-height: 1.5;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  .page {
+    width: 210mm; height: 297mm; margin: 0 auto;
+    background: #fffdf8; padding: 10mm 12mm;
+    display: flex; flex-direction: column;
+  }
+
+  .header {
+    display: flex; align-items: center; gap: 12px;
+    padding-bottom: 8px; border-bottom: 2.5px solid #c97a3a;
+    margin-bottom: 10px; flex-shrink: 0;
+  }
+  .header img {
+    width: 64px; height: 64px; object-fit: cover;
+    border-radius: 10px; border: 2px solid #e0b87a;
+  }
+  .header-text h1 { font-size: 21px; color: #8a4a1a; letter-spacing: 1px; }
+  .header-text .meta { font-size: 12px; color: #8a6a4a; margin-top: 3px; }
+  .header-text .meta span {
+    display: inline-block; background: #fbeedd;
+    padding: 2px 8px; border-radius: 10px; margin-right: 6px;
+  }
+
+  .steps {
+    flex: 1; display: flex; flex-direction: column;
+    justify-content: flex-start; gap: 14px;
+  }
+  .step { display: flex; gap: 10px; align-items: flex-start; }
+  .num {
+    flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%;
+    background: #c97a3a; color: #fff; font-size: 13px; font-weight: bold;
+    display: flex; align-items: center; justify-content: center; margin-top: 2px;
+  }
+  .step-body { flex: 1; }
+  .step-body .title { font-size: 14.5px; font-weight: bold; color: #8a4a1a; }
+  .step-body .hint { font-size: 12.5px; color: #8a6a4a; margin-bottom: 3px; }
+  .write-line {
+    border-bottom: 1px dashed #d8b48a; height: 26px; margin: 2px 0;
+  }
+  .write-line.short { width: 55%; }
+  .write-line.long { width: 100%; }
+
+  /* 数学算式方格区（数学版步骤4用） */
+  .calc-box {
+    border: 1px dashed #d8b48a; border-radius: 4px;
+    min-height: 76px; margin: 4px 0; padding: 4px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4px;
+  }
+  .calc-box::before {
+    content: ""; grid-column: 1 / -1; height: 1px;
+  }
+
+  .checklist {
+    display: flex; gap: 16px; margin-top: 8px;
+    font-size: 12px; color: #8a6a4a; flex-shrink: 0;
+  }
+  .checklist span::before { content: "☐ "; font-size: 14px; }
+
+  .extra {
+    margin-top: 8px; background: #fbf0e0;
+    border-left: 4px solid #e0b87a; border-radius: 0 8px 8px 0;
+    padding: 8px 12px; flex-shrink: 0;
+  }
+  .extra .extra-title { font-size: 13px; font-weight: bold; color: #8a5a1a; margin-bottom: 4px; }
+  .extra-item {
+    font-size: 12px; color: #6a4a2a; margin-bottom: 4px;
+    padding-left: 18px; position: relative; line-height: 1.5;
+  }
+  .extra-item::before { content: "☕"; position: absolute; left: 0; font-size: 12px; }
+
+  .parent {
+    margin-top: 6px; background: #faf6ef;
+    border: 1px dashed #d9b98a; border-radius: 8px;
+    padding: 6px 12px; font-size: 11px; color: #8a6a4a;
+    line-height: 1.5; flex-shrink: 0;
+  }
+  .parent b { color: #6b4a2a; }
+
+  @media print {
+    body { background: #fff; }
+    .page { margin: 0; padding: 0; width: auto; height: auto; }
+  }
+
+  /* ===== 参考答案页（家长核对版）===== */
+  .page { page-break-after: always; }
+  .page:last-child { page-break-after: auto; }
+  .answer-page {
+    background: #fbfaf6; gap: 10px;
+  }
+  .ans-header { padding-bottom: 8px; border-bottom: 2.5px solid #8a9a7a; flex-shrink: 0; }
+  .ans-header h2 { font-size: 17px; color: #4a5a3a; letter-spacing: 1px; }
+  .ans-header .ans-meta { font-size: 11.5px; color: #7a8a7a; margin-top: 2px; }
+  .ans-warn {
+    background: #fdf3e3; border: 1px dashed #d4b86a; border-radius: 8px;
+    padding: 6px 10px; font-size: 11.5px; color: #8a6a3a; line-height: 1.6; flex-shrink: 0;
+  }
+  .ans-block { display: flex; gap: 10px; align-items: flex-start; }
+  .ans-num {
+    flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%;
+    background: #8a9a7a; color: #fff; font-size: 12px; font-weight: bold;
+    display: flex; align-items: center; justify-content: center; margin-top: 2px;
+  }
+  .ans-body { flex: 1; }
+  .ans-q { font-size: 12.5px; font-weight: bold; color: #4a5a3a; }
+  .ans-a { font-size: 12px; color: #5a6a5a; line-height: 1.6; margin-top: 2px; }
+  .ans-a b { color: #6b7a5a; }
+  .ans-tag {
+    display: inline-block; font-size: 10.5px; padding: 1px 8px; border-radius: 8px;
+    margin-left: 6px; vertical-align: middle;
+  }
+  .ans-tag.obj { background: #e4ecda; color: #4a6a3a; }
+  .ans-tag.open { background: #f0e8d8; color: #8a6a3a; }
+  .ans-section {
+    background: #f2f4ec; border-radius: 8px; padding: 8px 12px; flex-shrink: 0;
+  }
+  .ans-section .sec-title { font-size: 12.5px; font-weight: bold; color: #4a6a3a; margin-bottom: 4px; }
+  .ans-section p { font-size: 11.5px; color: #5a6a5a; line-height: 1.6; }
+  .ans-parent {
+    background: #faf8f3; border: 1px dashed #c9b99a; border-radius: 8px;
+    padding: 6px 12px; font-size: 11.5px; color: #7a6a4a; line-height: 1.6; flex-shrink: 0;
+  }
+  .ans-parent b { color: #6b5a3a; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ▼ 顶部 -->
+  <div class="header">
+    <img src="https://aka.doubaocdn.com/s/m8Spy7Qfkj" alt="沏茶问题配图">
+    <div class="header-text">
+      <h1>📖 预习卡</h1>
+      <div class="meta">
+        <span>《沏茶问题》</span>
+        <span>人教版数学 · 四年级上册 · 第八单元</span>
+        <span>⏱ 约15-20分钟</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ▼ 六步动作链：看→读→圈→想→说→问（数学版） -->
+  <div class="steps">
+    <div class="step">
+      <div class="num">1</div>
+      <div class="step-body">
+        <div class="title">看 · 看课题，猜一猜</div>
+        <div class="hint">今天要学的单元叫"数学广角——优化"。猜猜"优化"是什么意思？你家里做什么事会讲究"快一点、省时间"？</div>
+        <div class="write-line long"></div>
+        <div class="write-line long"></div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="num">2</div>
+      <div class="step-body">
+        <div class="title">读 · 读例题，看懂在问什么</div>
+        <div class="hint">读一读"沏茶问题"：小明要给客人沏茶，要做哪些事？每件事要花几分钟？题目问的是什么？</div>
+        <div class="write-line long"></div>
+        <div class="write-line long"></div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="num">3</div>
+      <div class="step-body">
+        <div class="title">圈 · 圈出看不懂的步骤</div>
+        <div class="hint">"怎样安排最省时间"哪里让你卡住了？把不懂的地方圈出来，比如"为什么顺序不同，时间会不一样"。</div>
+        <div class="write-line long"></div>
+        <div class="write-line long"></div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="num">4</div>
+      <div class="step-body">
+        <div class="title">想 · 先自己试一道</div>
+        <div class="hint">如果是你，你会先做什么、再做什么？有没有两件事可以同时做？自己排一个顺序，在下面算一算一共要几分钟。</div>
+        <div class="calc-box"></div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="num">5</div>
+      <div class="step-body">
+        <div class="title">说 · 合上书讲思路</div>
+        <div class="hint">合上书，说说你是怎么安排沏茶的，为什么你觉得这样省时间？（讲出你的想法就行）</div>
+        <div class="write-line long"></div>
+        <div class="write-line long"></div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="num">6</div>
+      <div class="step-body">
+        <div class="title">问 · 哪里还没搞懂</div>
+        <div class="hint">写下你最想问的问题——比如"怎样安排才算最省时间？"或者你自己的疑问，明天带去课堂。</div>
+        <div class="write-line long"></div>
+        <div class="write-line long"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ▼ 自我检查（开放性勾选） -->
+  <div class="checklist">
+    <span>我能看懂题目在问什么了</span>
+    <span>我能自己排出一种顺序</span>
+    <span>我有了自己的问题</span>
+  </div>
+
+  <!-- ▼ 拓展角（选做） -->
+  <div class="extra">
+    <div class="extra-title">☕ 拓展角（选做）</div>
+    <div class="extra-item">生活联结：观察一下家里做饭或烧水时，有没有"同时做两件事"？记下来，明天和同学比比谁的安排更省时。</div>
+    <div class="extra-item">好奇延伸："用最少时间做完事情"的想法，数学里叫"统筹"。查查生活里还有哪些统筹的例子（比如车站排队、工厂流水线）。</div>
+  </div>
+
+  <div class="parent">
+    <b>给家长：</b>孩子能自己排出顺序、能说出"为什么这样省时间"（哪怕不完整），就达到这次预习的目标了，不用纠正"最优解"。<br>
+    一起聊了吗？☐ 聊了（可画星 ☆☆☆）
+  </div>
+
+</div>
+
+<!-- ===== 第2页：参考答案（家长核对版）===== -->
+<div class="page answer-page">
+
+  <div class="ans-header">
+    <h2>📄 参考答案 · 家长核对版</h2>
+    <div class="ans-meta">《沏茶问题》· 人教版数学 · 四年级上册 · 第八单元</div>
+  </div>
+
+  <div class="ans-warn">⚠️ 先让孩子独立完成预习，再翻开本页对照；不要让孩子照着抄。主观题没有唯一答案，孩子答到"方向"就算达到目标。</div>
+
+  <div class="ans-block">
+    <div class="ans-num">1</div>
+    <div class="ans-body">
+      <div class="ans-q">看 · "优化"是什么意思 <span class="ans-tag open">无唯一答案</span></div>
+      <div class="ans-a"><b>核对要点：</b>孩子能说出"更省时间 / 更省事 / 找到更好的办法"这类方向即可，不用说出准确定义。</div>
+    </div>
+  </div>
+
+  <div class="ans-block">
+    <div class="ans-num">2</div>
+    <div class="ans-body">
+      <div class="ans-q">读 · 看懂例题 <span class="ans-tag obj">参考</span></div>
+      <div class="ans-a">
+        要做的 6 件事：洗水壶 1 分钟、接水 1 分钟、烧水 8 分钟、洗茶杯 2 分钟、找茶叶 1 分钟、沏茶 1 分钟。<br>
+        <b>题目问的是：</b>怎样安排这几件事，才能最快让客人喝上茶。
+      </div>
+    </div>
+  </div>
+
+  <div class="ans-block">
+    <div class="ans-num">3</div>
+    <div class="ans-body">
+      <div class="ans-q">圈 · 圈出卡点 <span class="ans-tag open">无唯一答案</span></div>
+      <div class="ans-a"><b>核对要点：</b>孩子能说出哪里卡住即可（例如"为什么顺序不同时间会不一样"）。卡点留给课堂。</div>
+    </div>
+  </div>
+
+  <div class="ans-block">
+    <div class="ans-num">4</div>
+    <div class="ans-body">
+      <div class="ans-q">想 · 自己排顺序 <span class="ans-tag obj">参考</span></div>
+      <div class="ans-a">
+        <b>最短安排：</b>洗水壶 1 → 接水 1 → 烧水 8（烧水同时洗茶杯 2、找茶叶 1）→ 沏茶 1，一共 <b>1+1+8+1 = 11 分钟</b>。<br>
+        一件一件做要 14 分钟。孩子能发现"烧水时可以同时做别的"，就抓到了关键。
+      </div>
+    </div>
+  </div>
+
+  <div class="ans-block">
+    <div class="ans-num">5</div>
+    <div class="ans-body">
+      <div class="ans-q">说 · 讲思路 <span class="ans-tag open">无唯一答案</span></div>
+      <div class="ans-a"><b>核对要点：</b>孩子能说出"先做什么、再做什么、哪两件事可以同时做"即可，不用完全最优。</div>
+    </div>
+  </div>
+
+  <div class="ans-block">
+    <div class="ans-num">6</div>
+    <div class="ans-body">
+      <div class="ans-q">问 · 留一个问题 <span class="ans-tag open">无唯一答案</span></div>
+      <div class="ans-a"><b>核对要点：</b>孩子能写下一个真问题即可（不用回答），例如"怎样安排才算最省时间？"——明天带去课堂。</div>
+    </div>
+  </div>
+
+  <div class="ans-section">
+    <div class="sec-title">☐ 自我检查三项（孩子自评，家长核对是否真做了）</div>
+    <p>能看懂题目在问什么 · 能自己排出一种顺序 · 有了自己的问题 —— 三项都勾了，说明这次预习到位了。</p>
+  </div>
+
+  <div class="ans-section">
+    <div class="sec-title">🌱 拓展角（选做，无标准答案）</div>
+    <p><b>生活联结：</b>观察家里"同时做两件事"即可，无对错。<br>
+    <b>好奇延伸：</b>"统筹"的生活例子可参考：车站排队引导、工厂流水线、机场安检、做饭时先烧水再备菜——都是"安排好顺序、能同时就同时"。</p>
+  </div>
+
+  <div class="ans-parent">
+    <b>给家长：</b>最优答案是 11 分钟，供你心里有数；但孩子能排出顺序、能发现"同时做"，就比答案本身更值得肯定。
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>预习卡 · 一个豆荚里的五粒豆（动作链版）</title>
+<style>
+  @page { size: A4 portrait; margin: 10mm 12mm; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+    color: #2c3e2d; background: #f5f3ee; line-height: 1.5;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  .page {
+    width: 210mm; height: 297mm; margin: 0 auto;
+    background: #fffef9; padding: 10mm 12mm;
+    display: flex; flex-direction: column;
+  }
+
+  .header {
+    display: flex; align-items: center; gap: 12px;
+    padding-bottom: 8px; border-bottom: 2.5px solid #6a994e;
+    margin-bottom: 10px; flex-shrink: 0;
+  }
+  .header img {
+    width: 64px; height: 64px; object-fit: cover;
+    border-radius: 10px; border: 2px solid #a7c957;
+  }
+  .header-text h1 { font-size: 21px; color: #386641; letter-spacing: 1px; }
+  .header-text .meta { font-size: 12px; color: #6b7a6b; margin-top: 3px; }
+  .header-text .meta span {
+    display: inline-block; background: #e8f0e3;
+    padding: 2px 8px; border-radius: 10px; margin-right: 6px;
+  }
+
+  .steps {
+    flex: 1; display: flex; flex-direction: column;
+    justify-content: flex-start; gap: 14px;
+  }
+  .step { display: flex; gap: 10px; align-items: flex-start; }
+  .num {
+    flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%;
+    background: #6a994e; color: #fff; font-size: 13px; font-weight: bold;
+    display: flex; align-items: center; justify-content: center; margin-top: 2px;
+  }
+  .step-body { flex: 1; }
+  .step-body .title { font-size: 14.5px; font-weight: bold; color: #386641; }
+  .step-body .hint { font-size: 12.5px; color: #7a8a7a; margin-bottom: 3px; }
+  .write-line {
+    border-bottom: 1px dashed #b0c4a8; height: 26px; margin: 2px 0;
+  }
+  .write-line.short { width: 55%; }
+  .write-line.long { width: 100%; }
+
+  .checklist {
+    display: flex; gap: 16px; margin-top: 8px;
+    font-size: 12px; color: #5a6a5a; flex-shrink: 0;
+  }
+  .checklist span::before { content: "☐ "; font-size: 14px; }
+
+  .extra {
+    margin-top: 8px; background: #f0f5e8;
+    border-left: 4px solid #a7c957; border-radius: 0 8px 8px 0;
+    padding: 8px 12px; flex-shrink: 0;
+  }
+  .extra .extra-title { font-size: 13px; font-weight: bold; color: #5a7a3a; margin-bottom: 4px; }
+  .extra-item {
+    font-size: 12px; color: #4a5a4a; margin-bottom: 4px;
+    padding-left: 18px; position: relative; line-height: 1.5;
+  }
+  .extra-item::before { content: "🌱"; position: absolute; left: 0; font-size: 12px; }
+
+  .parent {
+    margin-top: 6px; background: #faf8f3;
+    border: 1px dashed #c9b99a; border-radius: 8px;
+    padding: 6px 12px; font-size: 11px; color: #8a7a5a;
+    line-height: 1.5; flex-shrink: 0;
+  }
+  .parent b { color: #6b5a3a; }
+
+  @media print {
+    body { background: #fff; }
+    .page { margin: 0; padding: 0; width: auto; height: auto; }
+  }
+
+  /* ===== 参考答案页（家长核对版）===== */
+  .page { page-break-after: always; }
+  .page:last-child { page-break-after: auto; }
+  .answer-page {
+    background: #fbfaf6; gap: 10px;
+  }
+  .ans-header { padding-bottom: 8px; border-bottom: 2.5px solid #8a9a7a; flex-shrink: 0; }
+  .ans-header h2 { font-size: 17px; color: #4a5a3a; letter-spacing: 1px; }
+  .ans-header .ans-meta { font-size: 11.5px; color: #7a8a7a; margin-top: 2px; }
+  .ans-warn {
+    background: #fdf3e3; border: 1px dashed #d4b86a; border-radius: 8px;
+    padding: 6px 10px; font-size: 11.5px; color: #8a6a3a; line-height: 1.6; flex-shrink: 0;
+  }
+  .ans-block { display: flex; gap: 10px; align-items: flex-start; }
+  .ans-num {
+    flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%;
+    background: #8a9a7a; color: #fff; font-size: 12px; font-weight: bold;
+    display: flex; align-items: center; justify-content: center; margin-top: 2px;
+  }
+  .ans-body { flex: 1; }
+  .ans-q { font-size: 12.5px; font-weight: bold; color: #4a5a3a; }
+  .ans-a { font-size: 12px; color: #5a6a5a; line-height: 1.6; margin-top: 2px; }
+  .ans-a b { color: #6b7a5a; }
+  .ans-tag {
+    display: inline-block; font-size: 10.5px; padding: 1px 8px; border-radius: 8px;
+    margin-left: 6px; vertical-align: middle;
+  }
+  .ans-tag.obj { background: #e4ecda; color: #4a6a3a; }
+  .ans-tag.open { background: #f0e8d8; color: #8a6a3a; }
+  .ans-divider { border-top: 1px dotted #c9c2ae; margin: 8px 0 8px 32px; }
+  .ans-section {
+    background: #f2f4ec; border-radius: 8px; padding: 8px 12px; flex-shrink: 0;
+  }
+  .ans-section .sec-title { font-size: 12.5px; font-weight: bold; color: #4a6a3a; margin-bottom: 4px; }
+  .ans-section p { font-size: 11.5px; color: #5a6a5a; line-height: 1.6; }
+  .ans-parent {
+    background: #faf8f3; border: 1px dashed #c9b99a; border-radius: 8px;
+    padding: 6px 12px; font-size: 11.5px; color: #7a6a4a; line-height: 1.6; flex-shrink: 0;
+  }
+  .ans-parent b { color: #6b5a3a; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ▼ 顶部 -->
+  <div class="header">
+    <img src="https://aka.doubaocdn.com/s/Vlfxz297MH" alt="一个豆荚里的五粒豆配图">
+    <div class="header-text">
+      <h1>📖 预习卡</h1>
+      <div class="meta">
+        <span>《一个豆荚里的五粒豆》</span>
+        <span>人教版语文 · 四年级上册 · 第二单元</span>
+        <span>⏱ 约15-20分钟</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ▼ 六步动作链：看→读→圈→想→说→问 -->
+  <div class="steps">
+    <div class="step">
+      <div class="num">1</div>
+      <div class="step-body">
+        <div class="title">看 · 看标题，猜一猜</div>
+        <div class="hint">先别看课文，看看题目：这五粒豆会有什么不同的命运？猜猜它们后来各自去了哪里？</div>
+        <div class="write-line long"></div>
+        <div class="write-line long"></div>
+        <div class="write-line short"></div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="num">2</div>
+      <div class="step-body">
+        <div class="title">读 · 从头到尾读一遍</div>
+        <div class="hint">把课文读一遍（可以出声），读不准的字先圈出来；用上下文猜猜它的意思。</div>
+        <div class="write-line long"></div>
+        <div class="write-line long"></div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="num">3</div>
+      <div class="step-body">
+        <div class="title">圈 · 圈出卡点</div>
+        <div class="hint">哪里让你停下来？圈出来：是生字？是没看懂的句子？还是想不通为什么这么写？</div>
+        <div class="write-line long"></div>
+        <div class="write-line long"></div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="num">4</div>
+      <div class="step-body">
+        <div class="title">想 · 想一想</div>
+        <div class="hint">五粒豌豆分别去了哪里？哪一粒的去向最让你意外？落在窗台青苔里的那粒豆，和屋里生病的小女孩有什么关系？</div>
+        <div class="write-line long"></div>
+        <div class="write-line short"></div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="num">5</div>
+      <div class="step-body">
+        <div class="title">说 · 合上书说一遍</div>
+        <div class="hint">合上书，把这个故事讲一遍：五粒豆各自飞向哪里，谁最幸运？（讲出大概就行）</div>
+        <div class="write-line long"></div>
+        <div class="write-line long"></div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="num">6</div>
+      <div class="step-body">
+        <div class="title">问 · 留一个问题</div>
+        <div class="hint">写下你最想弄明白的一个问题——课文里没写明白的，或想跟同学讨论的，明天带去课堂。</div>
+        <div class="write-line long"></div>
+        <div class="write-line long"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ▼ 自我检查（开放性勾选） -->
+  <div class="checklist">
+    <span>我能读准圈出来的字了</span>
+    <span>我能讲出大概了</span>
+    <span>我有了自己的问题</span>
+  </div>
+
+  <!-- ▼ 拓展角（选做） -->
+  <div class="extra">
+    <div class="extra-title">🌱 拓展角（选做）</div>
+    <div class="extra-item">生活联结：找一颗豆子或种子，猜猜发芽需要什么？放在湿棉花上试试，观察它几天里的变化。</div>
+    <div class="extra-item">好奇延伸：这是丹麦作家安徒生的故事，《丑小鸭》《卖火柴的小女孩》也出自他手。他为什么要写"一粒豌豆"？有兴趣可以查一查。</div>
+  </div>
+
+  <div class="parent">
+    <b>给家长：</b>孩子做完六个动作、能讲出大概、能提出问题，就达到这次预习的目标了，不用纠正"对不对"。<br>
+    一起聊了故事吗？☐ 聊了（可画星 ☆☆☆）
+  </div>
+
+</div>
+
+<!-- ===== 第2页：参考答案（家长核对版）===== -->
+<div class="page answer-page">
+
+  <div class="ans-header">
+    <h2>📄 参考答案 · 家长核对版</h2>
+    <div class="ans-meta">《一个豆荚里的五粒豆》· 人教版语文 · 四年级上册 · 第二单元</div>
+  </div>
+
+  <div class="ans-warn">⚠️ 先让孩子独立完成预习，再翻开本页对照；不要让孩子照着抄。主观题没有唯一答案，孩子答到"方向"就算达到目标。</div>
+
+  <div class="ans-block">
+    <div class="ans-num">1</div>
+    <div class="ans-body">
+      <div class="ans-q">看 · 猜一猜 <span class="ans-tag open">无唯一答案</span></div>
+      <div class="ans-a"><b>核对要点：</b>孩子能说出 1~2 个猜测即可，例如"有的豆会发芽""有的会被吃掉"。猜得对不对不重要——先猜、读完再对照，本身就是预习。</div>
+    </div>
+  </div>
+
+  <div class="ans-block">
+    <div class="ans-num">2</div>
+    <div class="ans-body">
+      <div class="ans-q">读 · 读准字音 <span class="ans-tag obj">参考</span></div>
+      <div class="ans-a">本课生字以<b>课本课后生字表</b>为准（课文中含"豌、按、僵、苔"等，请对照课本核对）。孩子读不准的字多读两遍，圈出来的一起解决即可。</div>
+    </div>
+  </div>
+
+  <div class="ans-block">
+    <div class="ans-num">3</div>
+    <div class="ans-body">
+      <div class="ans-q">圈 · 圈出卡点 <span class="ans-tag open">无唯一答案</span></div>
+      <div class="ans-a"><b>核对要点：</b>孩子能说出"卡在哪"（生字 / 句子 / 情节）即可。卡点不用立刻解决——把它留到课堂上，正是预习的目的。</div>
+    </div>
+  </div>
+
+  <div class="ans-block">
+    <div class="ans-num">4</div>
+    <div class="ans-body">
+      <div class="ans-q">想 · 五粒豆的去向 <span class="ans-tag obj">参考</span></div>
+      <div class="ans-a">
+        ① 想飞到"广阔世界"的那粒 → 落在屋顶水笕里，被鸽子吃了。<br>
+        ② 在地上打滚的两粒 → 也没走多远，被鸽子吃了。<br>
+        ③ 想飞进太阳里的那粒 → 落到水沟里，在脏水里泡着涨大了。<br>
+        ④ 落在窗台青苔裂缝里的那粒 → 发芽、长叶，开出了紫色的豌豆花。<br>
+        <b>和生病小女孩的关系：</b>豌豆在小女孩窗下发芽开花，小女孩看着它一天天恢复精神——"这一天简直像一个节日"。（情节层参考；"为什么这样写"留给课堂。）
+      </div>
+    </div>
+  </div>
+
+  <div class="ans-divider"></div>
+
+  <div class="ans-block">
+    <div class="ans-num">5</div>
+    <div class="ans-body">
+      <div class="ans-q">说 · 合书讲故事 <span class="ans-tag open">无唯一答案</span></div>
+      <div class="ans-a"><b>核对要点：</b>孩子能讲出主线即可——"五粒豆离开豆荚后去向各自不同，其中落在窗台的一粒发芽开花，陪着小女孩好起来"。讲不出细节没关系，能说出大概就达标。</div>
+    </div>
+  </div>
+
+  <div class="ans-block">
+    <div class="ans-num">6</div>
+    <div class="ans-body">
+      <div class="ans-q">问 · 留一个问题 <span class="ans-tag open">无唯一答案</span></div>
+      <div class="ans-a"><b>核对要点：</b>孩子能写下一个真问题即可（不用回答），例如"第五粒豆为什么能给小女孩希望？"——明天带去课堂。</div>
+    </div>
+  </div>
+
+  <div class="ans-section">
+    <div class="sec-title">☐ 自我检查三项（孩子自评，家长核对是否真做了）</div>
+    <p>能读准圈出来的字 · 能讲出大概 · 有了自己的问题 —— 三项都勾了，说明这次预习到位了。</p>
+  </div>
+
+  <div class="ans-section">
+    <div class="sec-title">🌱 拓展角（选做，无标准答案）</div>
+    <p><b>发芽实验：</b>参考：发芽一般需要水、空气和适宜温度；常见顺序是"先吸水涨大 → 破壳出芽"。具体几天因温度和种子而异，让孩子自己记观察就好。<br>
+    <b>好奇延伸：</b>参考：这篇故事创作于 1853 年，源自安徒生的童年回忆——他小时候曾在一个小木盒里种葱和豆子，看着它们发芽长大。（安徒生研究资料）</p>
+  </div>
+
+  <div class="ans-parent">
+    <b>给家长：</b>第 4 步是课文情节，答错不用批评——课堂上老师会带着精读。预习的价值不是"预习完就会"，而是孩子带着问题去上课。
+  </div>
+
+</div>
+</body>
+</html>

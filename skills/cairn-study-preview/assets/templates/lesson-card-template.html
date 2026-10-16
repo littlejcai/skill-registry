@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>探索卡 · {{课题标题}}</title>
+<!--
+  探索卡模板（六幕预习卡片 · 3页A4）
+  ======================================
+  使用：复制本文件，替换 {{占位符}} 后保存为 HTML。
+
+  ┌─ 六幕结构（固定，顺序不变）──────────────┐
+  │ 1. 好奇钩子：一个大问题                    │
+  │ 2. 背后的故事：2~4段真实背景              │
+  │ 3. 想一想：选择题 + 答案引导              │
+  │ 4. 生活联结：和孩子日常有关的点            │
+  │ 5. 上课任务：带着问题去课堂                │
+  │ 6. 想深入·资源库：3~4条真实资源            │
+  └──────────────────────────────────────────────┘
+
+  ┌─ 可选板块（有就加，没有就整块删掉）──────┐
+  │ □ 对比/结局表（第1页末尾）                 │
+  │    什么时候加：课文有多个角色/方法/选项    │
+  │    各自不同结局时。数学可以是"四种         │
+  │    计数方法对比"。                         │
+  │                                          │
+  │ □ 课文/原作品对照（第2页末尾）             │
+  │    什么时候加：课文是改编/节选，有         │
+  │    原作品可对比时。不是每篇都有。          │
+  └──────────────────────────────────────────────┘
+
+  ┌─ 科目适配 ────────────────────────────────┐
+  │ 六幕结构跨科目通用：                        │
+  │  语文：钩子→作者背景/创作故事→选择题→       │
+  │        生活联结→上课任务→书/纪录片         │
+  │  数学：钩子→数学史/概念来源→选择题→        │
+  │        生活联结→上课任务→纪录片/动手实验   │
+  │  英语：钩子→文化背景/词源→选择题→         │
+  │        生活联结→上课任务→动画/绘本         │
+  │  科学：钩子→科学家/发现史→选择题→          │
+  │        生活联结→上课任务→实验视频/动手实验 │
+  │  标签颜色：真实=绿、冷知识=橙、            │
+  │           真相=蓝、对照=粉                  │
+  └──────────────────────────────────────────────┘
+
+  排版规范（已调好）：正文15px，行高1.9。
+  主题色按课文内容选（不按科目固定）：
+    植物/自然→绿  海洋/天空→蓝  秋天/数学→橙
+    节日/温暖→红  星空/科学→紫  动物/活力→黄绿
+  选好主色后全局替换 #6a994e 即可。
+  打印勾选"背景图形"。
+-->
+<style>
+  @page { size: A4 portrait; margin: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+    color: #2c3e2d; background: #e8e4d8; line-height: 1.9;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  .page {
+    width: 210mm; min-height: 296mm; margin: 10px auto;
+    background: #fffef9; position: relative; overflow: hidden;
+    page-break-after: always; padding: 18mm 20mm 20mm 20mm;
+  }
+  .page:last-child { page-break-after: auto; }
+
+  @media print {
+    body { background: #fff; }
+    .page { margin: 0; }
+  }
+  .footer {
+    position: absolute; bottom: 8mm; left: 20mm; right: 20mm;
+    display: flex; justify-content: space-between;
+    font-size: 11px; color: #a0b0a0;
+  }
+
+  .cover-head { margin-bottom: 20px; }
+  .cover-head .emoji { font-size: 56px; margin-bottom: 10px; }
+  .cover-head h1 { font-size: 28px; color: #386641; line-height: 1.3; margin-bottom: 8px; }
+  .cover-head .meta { font-size: 13px; color: #6b7a6b; }
+  .cover-head .meta span {
+    display: inline-block; background: #e8f0e3;
+    padding: 3px 12px; border-radius: 12px; margin-right: 6px;
+  }
+
+  .hook {
+    background: #6a994e; color: #fff; padding: 20px 24px;
+    border-radius: 12px; margin-bottom: 20px;
+  }
+  .hook .label { font-size: 12px; opacity: 0.8; letter-spacing: 2px; margin-bottom: 8px; }
+  .hook p { font-size: 17px; line-height: 1.8; }
+
+  .sec-title {
+    font-size: 17px; font-weight: bold; color: #386641;
+    margin: 18px 0 8px 0; padding-left: 10px;
+    border-left: 4px solid #6a994e;
+  }
+  .body p { font-size: 15px; color: #3a4a3a; margin-bottom: 10px; }
+  .body b { color: #1a2a1a; }
+
+  .tag {
+    display: inline-block; font-size: 11px; font-weight: bold;
+    padding: 2px 10px; border-radius: 10px; margin-bottom: 4px;
+  }
+  .tag.real { background: #d4e8c8; color: #3a6a2a; }
+  .tag.cold { background: #f0e0c8; color: #8a5a2a; }
+  .tag.truth { background: #d8e4f0; color: #2a5a8a; }
+  .tag.tip { background: #f0d8e0; color: #8a3a5a; }
+
+  /* 对比/结局表：可选板块，没有就整块删 */
+  .rows {
+    background: #faf8f3; border-radius: 8px; padding: 12px 16px;
+    margin: 8px 0; font-size: 14px; line-height: 1.8;
+  }
+  .rows .row { display: flex; gap: 8px; margin-bottom: 4px; }
+  .rows .row:last-child { margin-bottom: 0; }
+  .rows .who { font-weight: bold; color: #386641; min-width: 70px; flex-shrink: 0; }
+
+  .quiz {
+    background: #fdf6e8; border-radius: 8px; padding: 14px 18px;
+    margin: 8px 0; font-size: 14.5px; line-height: 1.8;
+  }
+  .quiz .options { margin-top: 8px; }
+  .quiz .opt { padding: 2px 0; }
+  .quiz .answer {
+    margin-top: 10px; padding-top: 8px; border-top: 1px dashed #d4b86a;
+    color: #8a6a2a; font-size: 13.5px;
+  }
+
+  .res {
+    display: flex; gap: 10px; align-items: flex-start;
+    font-size: 14px; padding: 8px 0; line-height: 1.7;
+    border-bottom: 1px dotted #d0d8c8;
+  }
+  .res:last-child { border-bottom: none; }
+  .res .icon { font-size: 20px; flex-shrink: 0; }
+
+  /* 动手实验展开版：允许写3-4行步骤 */
+  .res.detail { flex-direction: column; }
+  .res.detail .res-head { display: flex; gap: 10px; align-items: flex-start; }
+  .res.detail .steps-detail {
+    margin-top: 6px; padding-left: 30px; font-size: 13px; color: #5a6a5a;
+    line-height: 1.8;
+  }
+
+  .parent {
+    margin-top: 18px; background: #f5f2ea; border-radius: 8px;
+    padding: 14px 18px; font-size: 12.5px; color: #7a6a4a; line-height: 1.8;
+  }
+  .parent b { color: #5a4a2a; }
+
+  /* v3：动笔区（填空缺内容、写选择理由用） */
+  .write-line { border-bottom: 1.5px dashed #b0c4a8; height: 26px; margin: 6px 0; }
+  .quiz-pick { margin-top: 10px; padding-top: 8px; border-top: 1px dashed #d4b86a; }
+  .quiz-pick .k { font-size: 14px; font-weight: bold; color: #8a6a2a; margin-bottom: 4px; }
+</style>
+</head>
+<body>
+
+<!-- ===== 第1页：封面 + 钩子 + 背后故事 +（可选对比表）===== -->
+<div class="page">
+  <div class="cover-head">
+    <div class="emoji">{{课题emoji}}</div>
+    <h1>{{课题标题}}</h1>
+    <div class="meta">
+      <span>{{作者/来源}} · {{年代}}</span>
+      <span>{{教材版本}} · {{年级学期}} · {{单元/章节}}</span>
+    </div>
+  </div>
+
+  <div class="hook">
+    <div class="label">🌱 好奇钩子</div>
+    <p>{{好奇钩子：一个大问题，孩子看完会想"咦为什么"}}</p>
+  </div>
+
+  <div class="sec-title">背后的故事</div>
+  <div class="body">
+    <p><span class="tag real">真实</span><br>
+    <b>{{故事1标题}}</b>{{故事1内容}}</p>
+    <p><span class="tag cold">冷知识</span><br>
+    <b>{{故事2标题}}</b>{{故事2内容}}</p>
+    <p><span class="tag truth">真相</span><br>
+    <b>{{故事3标题}}</b>{{故事3内容}}</p>
+  </div>
+
+  <!-- ▼ 可选：对比/结局表。多个角色/方法有不同结局时用；没有就整块删 -->
+  <div class="sec-title">{{对比表标题，如"五粒豆各自的结局"}}</div>
+  <div class="rows">
+    <div class="row"><span class="who">{{对象1}}</span><span>{{对象1情况}}</span></div>
+    <div class="row"><span class="who">{{对象2}}</span><span>{{对象2情况}}</span></div>
+    <div class="row"><span class="who">{{对象3}}</span><span>{{对象3情况}}</span></div>
+  </div>
+
+  <div class="footer"><span>探索卡</span><span>1 / 3</span></div>
+</div>
+
+<!-- ===== 第2页：选择题 + 生活联结 +（可选课文对照）===== -->
+<div class="page">
+  <div class="sec-title">想一想</div>
+  <div class="quiz">
+    <b>🤔 先做个小选择：</b><br><br>
+    {{选择题题干}}
+    <div class="options">
+      <div class="opt">A. {{选项A}}</div>
+      <div class="opt">B. {{选项B}}</div>
+      <div class="opt">C. {{选项C}}</div>
+      <div class="opt">D. {{选项D}}</div>
+    </div>
+    <div class="quiz-pick">
+      <div class="k">✏️ 你选：☐ A　☐ B　☐ C　☐ D —— 为什么？</div>
+      <div class="write-line"></div>
+      <div class="write-line"></div>
+    </div>
+    <div class="answer">
+      💡 {{答案和解析：不直接说教，引导思考}}
+    </div>
+  </div>
+
+  <div class="sec-title">生活联结</div>
+  <div class="body">
+    <p>{{生活联结：和孩子日常有关的点}}</p>
+  </div>
+  <div class="write-line"></div>
+
+  <!-- ▼ 可选：课文/原作品对照。有原作品可对比时用；没有就整块删 -->
+  <div class="sec-title">课文和原作品的区别</div>
+  <div class="body">
+    <p><span class="tag tip">对照</span><br>
+    <b>{{对照点}}</b>{{课文删改了什么、为什么、上课时留意什么}}</p>
+  </div>
+
+  <div class="footer"><span>想一想 · 联结 · 课文对照</span><span>2 / 3</span></div>
+</div>
+
+<!-- ===== 第3页：上课任务 + 资源库 + 给家长 ===== -->
+<div class="page">
+  <div class="sec-title">上课任务</div>
+  <div class="body">
+    <p>{{带着什么问题去课堂验证}}</p>
+  </div>
+  <div class="write-line"></div>
+  <div class="write-line"></div>
+
+  <div class="sec-title">想深入 · 资源库</div>
+  <div class="res"><span class="icon">📖</span><div><b>{{资源1}}</b>{{说明}}</div></div>
+  <div class="res"><span class="icon">📺</span><div><b>{{资源2}}</b>{{说明}}</div></div>
+  <!-- 动手实验：需要写步骤时用 .res.detail 展开版；一句话能说清就用普通 .res -->
+  <div class="res detail">
+    <div class="res-head"><span class="icon">🌱</span><div><b>动手：{{动手活动}}</b></div></div>
+    <div class="steps-detail">{{步骤1}}<br>{{步骤2}}<br>{{步骤3}}</div>
+  </div>
+  <div class="res"><span class="icon">🔍</span><div><b>延伸：{{延伸内容}}</b>{{和本课的关联}}</div></div>
+
+  <div class="parent">
+    <b>给家长：</b>{{家长提示：播种了什么，不用做什么}}
+  </div>
+
+  <div class="footer"><span>上课任务 · 资源库 · 给家长</span><span>3 / 3</span></div>
+</div>
+
+</body>
+</html>

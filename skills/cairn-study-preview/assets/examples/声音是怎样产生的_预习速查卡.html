@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>预习速查卡 · 声音是怎样产生的</title>
+<style>
+  @page { size: A4 portrait; margin: 10mm 12mm; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+    color: #2a3a4a; background: #f2f5f7; line-height: 1.45;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  @media print {
+    body { background: #fff; }
+  }
+
+  .page {
+    width: 210mm; min-height: 296mm; margin: 0 auto;
+    background: #f9fcfe; padding: 10mm 12mm;
+    display: flex; flex-direction: column;
+  }
+  .header {
+    display: flex; align-items: center; gap: 10px;
+    padding-bottom: 8px; border-bottom: 2.5px solid #4a7a9e;
+    margin-bottom: 12px;
+  }
+  .header img {
+    width: 56px; height: 56px; object-fit: cover;
+    border-radius: 10px; border: 2px solid #9ab8cc;
+  }
+  .header-text h1 { font-size: 20px; color: #2a5a7a; letter-spacing: 1px; }
+  .header-text .meta { font-size: 13px; color: #5a7a8a; margin-top: 2px; }
+  .header-text .meta span {
+    display: inline-block; background: #e8f1f6;
+    padding: 1px 8px; border-radius: 9px; margin-right: 5px;
+  }
+
+  .sec-a {
+    background: #eef4f8; border: 1px solid #c8dce4; border-radius: 10px;
+    padding: 12px 14px; margin-bottom: 12px;
+  }
+  .sec-title { font-size: 14.5px; font-weight: bold; color: #3a6a8a; margin-bottom: 8px; }
+  .task-row { display: flex; gap: 9px; align-items: flex-start; margin-bottom: 10px; font-size: 14px; color: #4a6a7a; }
+  .task-row .t-num {
+    flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%;
+    background: #4a7a9e; color: #fff; font-size: 13px; font-weight: bold;
+    display: flex; align-items: center; justify-content: center; margin-top: 1px;
+  }
+  .task-row .t-body { flex: 1; }
+  .task-row .t-body b { color: #2a5a7a; }
+  .task-row .t-check { flex-shrink: 0; font-size: 15px; color: #4a7a9e; }
+  .task-row .t-check::before { content: "☐ "; }
+  .write-line { border-bottom: 1.5px dashed #a8bcc8; height: 26px; margin: 4px 0 2px 30px; }
+
+  .sec-b { flex: 1; display: flex; flex-direction: column; border: 1px solid #c8d8e0; border-radius: 10px; padding: 12px 14px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 14px; align-content: start; }
+  .kv {
+    background: #f1f7fa; border: 1px solid #c9dce8; border-radius: 8px;
+    padding: 10px 12px; display: flex; flex-direction: column;
+  }
+  .kv-wide { grid-column: 1 / -1; }
+  .kv .k { font-size: 14px; font-weight: bold; color: #3a5a6a; margin-bottom: 5px; }
+  .kv .v { font-size: 13.5px; color: #4a6a7a; line-height: 1.65; }
+  .kv .v .ref { color: #8aa0b0; font-size: 12.5px; }
+  .kv .write-line { border-bottom: 1.5px dashed #c2d4e0; margin: 6px 0 0 0; }
+  .chip-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 2px; }
+  .chip {
+    font-size: 13px; background: #eef4f8; border-radius: 6px;
+    padding: 3px 10px; color: #3a6a8a; border: 1px solid #c8dce4;
+  }
+  .note-line {
+    font-size: 13px; color: #6a8aa0; border-top: 1px dotted #b8ccd8;
+    padding-top: 8px; margin-top: 10px; line-height: 1.6;
+  }
+  .note-line b { color: #4a6a8a; }
+
+  .sec-c { margin-top: 12px; }
+  .grid-c { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 14px; }
+  .c-box {
+    background: #f4f9fb; border: 1px solid #c8dce8; border-radius: 8px;
+    padding: 10px 12px; display: flex; flex-direction: column;
+  }
+  .c-box .k { font-size: 13.5px; font-weight: bold; color: #3a6a8a; margin-bottom: 4px; }
+  .c-box .write-line { border-bottom: 1.5px dashed #c2d4e0; margin: 0; }
+
+  .footer-note {
+    margin-top: 12px; background: #f6f9fb;
+    border: 1px dashed #a8c0cc; border-radius: 10px;
+    padding: 6px 12px; font-size: 12.5px; color: #5a7a8a; line-height: 1.5;
+  }
+  .footer-note b { color: #3a5a6a; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ▼ 顶部 -->
+  <div class="header">
+    <img src="https://aka.doubaocdn.com/s/NxEdACj86E" alt="声音是怎样产生的配图">
+    <div class="header-text">
+      <h1>📖 预习速查卡（速查版）</h1>
+      <div class="meta">
+        <span>《声音是怎样产生的》</span>
+        <span>教科版科学 · 四年级上册 · 第一单元</span>
+        <span>⏱ 10分钟 · 一页搞定</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ▼ A区：快速预习任务 -->
+  <div class="sec-a">
+    <div class="sec-title">① 快速预习任务（先做这 3 步）</div>
+    <div class="task-row">
+      <div class="t-num">1</div>
+      <div class="t-body"><b>读</b>：读一遍课文，看看声音是怎样产生的。</div>
+      <div class="t-check"></div>
+    </div>
+    <div class="task-row">
+      <div class="t-num">2</div>
+      <div class="t-body"><b>想</b>：猜猜让物体停止振动会怎样？写下你的猜想：</div>
+      <div class="t-check"></div>
+    </div>
+    <div class="write-line"></div>
+    <div class="write-line"></div>
+    <div class="task-row">
+      <div class="t-num">3</div>
+      <div class="t-body"><b>说</b>：对照速查，说说你听过的声音都是怎么来的：</div>
+      <div class="t-check"></div>
+    </div>
+    <div class="write-line"></div>
+    <div class="write-line"></div>
+  </div>
+
+  <!-- ▼ B区：本课重点速查（长内容占整行，短内容并排） -->
+  <div class="sec-b">
+    <div class="sec-title">② 本课重点速查（科学版）</div>
+    <div class="grid">
+
+      <div class="kv">
+        <div class="k">▍核心概念</div>
+        <div class="v">声音是由物体的<b>振动</b>产生的。</div>
+        <div class="write-line"></div>
+      </div>
+
+      <div class="kv">
+        <div class="k">▍课文例子</div>
+        <div class="v">鼓面放纸屑会跳舞；音叉弹开乒乓球；说话时手摸喉咙会麻。</div>
+        <div class="write-line"></div>
+      </div>
+
+      <div class="kv kv-wide">
+        <div class="k">▍关键事实</div>
+        <div class="v">
+          真空<b>不能</b>传声——月球上没有空气，宇航员面对面也听不到声音，要用电台对话。
+        </div>
+        <div class="write-line"></div>
+      </div>
+
+      <div class="kv kv-wide">
+        <div class="k">▍实验观察要点</div>
+        <div class="chip-row">
+          <span class="chip">鼓面放纸屑</span><span class="chip">音叉碰乒乓球</span><span class="chip">手摸喉咙</span><span class="chip">停止振动 → 声音停止</span>
+        </div>
+      </div>
+
+    </div>
+    <div class="note-line">
+      <b>给孩子：</b>先猜结果再对结论，猜错没关系——实验课上你自己会做。<br>
+      <b>给家长：</b>结论让孩子说出来；"振动"课堂会做实验验证，预习不提前做实验。
+    </div>
+  </div>
+
+  <!-- ▼ C区：我的收获 & 我的问题 -->
+  <div class="sec-c">
+    <div class="sec-title">③ 我的收获 & 我的问题（上课带着去）</div>
+    <div class="grid-c">
+      <div class="c-box">
+        <div class="k">🌟 这课我最想记住的是</div>
+        <div class="write-line"></div>
+        <div class="write-line"></div>
+      </div>
+      <div class="c-box">
+        <div class="k">❓ 上课我要问</div>
+        <div class="write-line"></div>
+        <div class="write-line"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-note">
+    ✅ 三项任务都勾了 + 速查看过一遍 = 这课预习完成。带着"我的问题"去上课。
+  </div>
+
+</div>
+</body>
+</html>

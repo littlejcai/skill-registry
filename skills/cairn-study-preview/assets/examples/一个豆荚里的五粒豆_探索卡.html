@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>探索卡 · 一个豆荚里的五粒豆</title>
+<style>
+  @page { size: A4 portrait; margin: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+    color: #2c3e2d; background: #e8e4d8; line-height: 1.9;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  .page {
+    width: 210mm; min-height: 296mm; margin: 10px auto;
+    background: #fffef9; position: relative; overflow: hidden;
+    page-break-after: always; padding: 18mm 20mm 20mm 20mm;
+  }
+  .page:last-child { page-break-after: auto; }
+
+  @media print {
+    body { background: #fff; }
+    .page { margin: 0; }
+  }
+  .footer {
+    position: absolute; bottom: 8mm; left: 20mm; right: 20mm;
+    display: flex; justify-content: space-between;
+    font-size: 11px; color: #a0b0a0;
+  }
+
+  .cover-head { margin-bottom: 20px; }
+  .cover-head .emoji { font-size: 56px; margin-bottom: 10px; }
+  .cover-head h1 { font-size: 28px; color: #386641; line-height: 1.3; margin-bottom: 8px; }
+  .cover-head .meta { font-size: 13px; color: #6b7a6b; }
+  .cover-head .meta span {
+    display: inline-block; background: #e8f0e3;
+    padding: 3px 12px; border-radius: 12px; margin-right: 6px;
+  }
+
+  .hook {
+    background: #6a994e; color: #fff; padding: 20px 24px;
+    border-radius: 12px; margin-bottom: 20px;
+  }
+  .hook .label { font-size: 12px; opacity: 0.8; letter-spacing: 2px; margin-bottom: 8px; }
+  .hook p { font-size: 17px; line-height: 1.8; }
+
+  .sec-title {
+    font-size: 17px; font-weight: bold; color: #386641;
+    margin: 18px 0 8px 0; padding-left: 10px;
+    border-left: 4px solid #6a994e;
+  }
+  .body p { font-size: 15px; color: #3a4a3a; margin-bottom: 10px; }
+  .body b { color: #1a2a1a; }
+
+  .tag {
+    display: inline-block; font-size: 11px; font-weight: bold;
+    padding: 2px 10px; border-radius: 10px; margin-bottom: 4px;
+  }
+  .tag.real { background: #d4e8c8; color: #3a6a2a; }
+  .tag.cold { background: #f0e0c8; color: #8a5a2a; }
+  .tag.truth { background: #d8e4f0; color: #2a5a8a; }
+  .tag.tip { background: #f0d8e0; color: #8a3a5a; }
+
+  .rows {
+    background: #faf8f3; border-radius: 8px; padding: 12px 16px;
+    margin: 8px 0; font-size: 14px; line-height: 1.8;
+  }
+  .rows .row { display: flex; gap: 8px; margin-bottom: 4px; }
+  .rows .row:last-child { margin-bottom: 0; }
+  .rows .who { font-weight: bold; color: #386641; min-width: 90px; flex-shrink: 0; }
+
+  .quiz {
+    background: #fdf6e8; border-radius: 8px; padding: 14px 18px;
+    margin: 8px 0; font-size: 14.5px; line-height: 1.8;
+  }
+  .quiz .options { margin-top: 8px; }
+  .quiz .opt { padding: 2px 0; }
+  .quiz .answer {
+    margin-top: 10px; padding-top: 8px; border-top: 1px dashed #d4b86a;
+    color: #8a6a2a; font-size: 13.5px;
+  }
+
+  .res {
+    display: flex; gap: 10px; align-items: flex-start;
+    font-size: 14px; padding: 8px 0; line-height: 1.7;
+    border-bottom: 1px dotted #d0d8c8;
+  }
+  .res:last-child { border-bottom: none; }
+  .res .icon { font-size: 20px; flex-shrink: 0; }
+
+  .res.detail { flex-direction: column; }
+  .res.detail .res-head { display: flex; gap: 10px; align-items: flex-start; }
+  .res.detail .steps-detail {
+    margin-top: 6px; padding-left: 30px; font-size: 13px; color: #5a6a5a;
+    line-height: 1.8;
+  }
+
+  .parent {
+    margin-top: 18px; background: #f5f2ea; border-radius: 8px;
+    padding: 14px 18px; font-size: 12.5px; color: #7a6a4a; line-height: 1.8;
+  }
+  .parent b { color: #5a4a2a; }
+
+  /* v3：动笔区 */
+  .write-line { border-bottom: 1.5px dashed #b0c4a8; height: 26px; margin: 6px 0; }
+  .quiz-pick { margin-top: 10px; padding-top: 8px; border-top: 1px dashed #d4b86a; }
+  .quiz-pick .k { font-size: 14px; font-weight: bold; color: #8a6a2a; margin-bottom: 4px; }
+</style>
+</head>
+<body>
+
+<!-- ===== 第1页：封面 + 钩子 + 背后故事 + 对比表 ===== -->
+<div class="page">
+  <div class="cover-head">
+    <div class="emoji">🌱</div>
+    <h1>一个豆荚里的五粒豆</h1>
+    <div class="meta">
+      <span>安徒生（丹麦）· 1853年创作</span>
+      <span>人教版语文 · 四年级上册 · 第二单元</span>
+    </div>
+  </div>
+
+  <div class="hook">
+    <div class="label">🌱 好奇钩子</div>
+    <p>一粒掉进窗台青苔缝里的小豌豆，能让生病的小女孩"慢慢好起来"吗？</p>
+  </div>
+
+  <div class="sec-title">背后的故事</div>
+  <div class="body">
+    <p><span class="tag real">真实</span><br>
+    <b>他写了 168 篇童话。</b>安徒生是丹麦的童话大师，《丑小鸭》《海的女儿》《卖火柴的小女孩》都出自他手。这篇《一个豆荚里的五粒豆》是他在 1853 年创作的，收进当年的《丹麦历书》。</p>
+    <p><span class="tag cold">冷知识</span><br>
+    <b>故事的种子，是他小时候种下的一粒豆。</b>安徒生在手记里说，这个故事来自儿时回忆：他在一个小木盒里装上土，种了一根葱和一粒豆——那就是他"开满了花的花园"。</p>
+    <p><span class="tag truth">真相</span><br>
+    <b>鞋匠的儿子，最爱写"不起眼的小东西"。</b>安徒生家里很穷，父亲是修鞋的。他笔下总出现微小的事物——丑小鸭、拇指姑娘、一粒豆——它们最后都做出了不起的事。</p>
+  </div>
+
+  <div class="sec-title">五粒豆各自的结局</div>
+  <div class="rows">
+    <div class="row"><span class="who">第1粒</span><span>飞向"广阔的世界"→ 掉进水沟，被泡得胖胖的</span></div>
+    <div class="row"><span class="who">第2、3、4粒</span><span>飞出去后，被鸽子吃掉了</span></div>
+    <div class="row"><span class="who">第5粒</span><span>落在窗台青苔缝里 → 发芽、开花，让小女孩重新快乐起来</span></div>
+  </div>
+
+  <div class="footer"><span>探索卡</span><span>1 / 3</span></div>
+</div>
+
+<!-- ===== 第2页：想一想 + 生活联结 ===== -->
+<div class="page">
+  <div class="sec-title">想一想</div>
+  <div class="quiz">
+    <b>🤔 先做个小选择：</b><br><br>
+    五粒豆的命运完全不同。你觉得，故事里哪一粒豆算"成功"？
+    <div class="options">
+      <div class="opt">A. 飞进广阔世界的（见过大世面）</div>
+      <div class="opt">B. 被鸽子吃掉的（成了别人的食物）</div>
+      <div class="opt">C. 落在青苔里开花、帮助小女孩的</div>
+      <div class="opt">D. 它们都算——每种命运都有它的意义</div>
+    </div>
+    <div class="quiz-pick">
+      <div class="k">✏️ 你选：☐ A　☐ B　☐ C　☐ D —— 为什么？</div>
+      <div class="write-line"></div>
+      <div class="write-line"></div>
+    </div>
+    <div class="answer">
+      💡 课文里，最不起眼的第五粒豆开了花，让生病的小女孩重新有了笑容。安徒生想说的，也许不是"谁最成功"，而是：看起来最小的那粒，也能做出了不起的事。你的选择是哪一个？理由呢？
+    </div>
+  </div>
+
+  <div class="sec-title">生活联结</div>
+  <div class="body">
+    <p>你种过豆子或养过绿植吗？一粒种子从发芽到开花，需要什么？再想一想：要是你生病没精神的时候，看见窗台上开了一朵花，心情会怎样？</p>
+  </div>
+  <div class="write-line"></div>
+
+  <div class="footer"><span>想一想 · 联结</span><span>2 / 3</span></div>
+</div>
+
+<!-- ===== 第3页：上课任务 + 资源库 + 给家长 ===== -->
+<div class="page">
+  <div class="sec-title">上课任务</div>
+  <div class="body">
+    <p>上课时留意：课文是怎么写小女孩"慢慢好起来"的？安徒生为什么让"一粒豆"而不是"一座花园"来帮助她？带着你的想法，去听听老师和同学怎么说。</p>
+  </div>
+  <div class="write-line"></div>
+  <div class="write-line"></div>
+
+  <div class="sec-title">想深入 · 资源库</div>
+  <div class="res"><span class="icon">📖</span><div><b>《安徒生童话》（叶君健译本，人民文学出版社）</b>找一找这篇的原文，对比课文删掉了哪些内容。</div></div>
+  <div class="res"><span class="icon">📺</span><div><b>视频平台搜"安徒生童话"改编动画</b>看一集，感受安徒生讲故事的方式。</div></div>
+  <div class="res detail">
+    <div class="res-head"><span class="icon">🌱</span><div><b>动手：种一粒豌豆（或绿豆）</b></div></div>
+    <div class="steps-detail">① 在浅盘里铺一层湿棉花<br>② 把豆子放上去，保持棉花湿润<br>③ 每天观察，记下发芽用了几天</div>
+  </div>
+  <div class="res"><span class="icon">🔍</span><div><b>延伸：查查"鞋匠的儿子安徒生"</b>他是怎么从贫穷的童年，成为写遍世界的大师。</div></div>
+
+  <div class="parent">
+    <b>给家长：</b>这课"播种"的是生命与希望的主题 + 安徒生其人。不用提前讲课文道理，孩子带着"哪粒豆最有用"的想法去上课就够了。
+  </div>
+
+  <div class="footer"><span>上课任务 · 资源库 · 给家长</span><span>3 / 3</span></div>
+</div>
+
+</body>
+</html>

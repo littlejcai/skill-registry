@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>预习速查卡 · 沏茶问题</title>
+<style>
+  @page { size: A4 portrait; margin: 10mm 12mm; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+    color: #4a2e1a; background: #f7f3ee; line-height: 1.45;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  @media print {
+    body { background: #fff; }
+  }
+
+  .page {
+    width: 210mm; min-height: 296mm; margin: 0 auto;
+    background: #fffdf8; padding: 10mm 12mm;
+    display: flex; flex-direction: column;
+  }
+  .header {
+    display: flex; align-items: center; gap: 10px;
+    padding-bottom: 8px; border-bottom: 2.5px solid #c97a3a;
+    margin-bottom: 12px;
+  }
+  .header img {
+    width: 56px; height: 56px; object-fit: cover;
+    border-radius: 10px; border: 2px solid #e0b87a;
+  }
+  .header-text h1 { font-size: 20px; color: #8a4a1a; letter-spacing: 1px; }
+  .header-text .meta { font-size: 13px; color: #8a6a4a; margin-top: 2px; }
+  .header-text .meta span {
+    display: inline-block; background: #fbeedd;
+    padding: 1px 8px; border-radius: 9px; margin-right: 5px;
+  }
+
+  .sec-a {
+    background: #fbf0e0; border: 1px solid #e8cfa8; border-radius: 10px;
+    padding: 12px 14px; margin-bottom: 12px;
+  }
+  .sec-title { font-size: 14.5px; font-weight: bold; color: #8a5a1a; margin-bottom: 8px; }
+  .task-row { display: flex; gap: 9px; align-items: flex-start; margin-bottom: 10px; font-size: 14px; color: #6a4a2a; }
+  .task-row .t-num {
+    flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%;
+    background: #c97a3a; color: #fff; font-size: 13px; font-weight: bold;
+    display: flex; align-items: center; justify-content: center; margin-top: 1px;
+  }
+  .task-row .t-body { flex: 1; }
+  .task-row .t-body b { color: #8a4a1a; }
+  .task-row .t-check { flex-shrink: 0; font-size: 15px; color: #c97a3a; }
+  .task-row .t-check::before { content: "☐ "; }
+  .write-line { border-bottom: 1.5px dashed #d8b48a; height: 26px; margin: 4px 0 2px 30px; }
+
+  .sec-b { flex: 1; display: flex; flex-direction: column; border: 1px solid #e8dcc8; border-radius: 10px; padding: 12px 14px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 14px; align-content: start; }
+  .kv {
+    background: #fdf7ec; border: 1px solid #ecd8ba; border-radius: 8px;
+    padding: 10px 12px; display: flex; flex-direction: column;
+  }
+  .kv-wide { grid-column: 1 / -1; }
+  .kv .k { font-size: 14px; font-weight: bold; color: #6b4a2a; margin-bottom: 5px; }
+  .kv .v { font-size: 13.5px; color: #6a4a2a; line-height: 1.65; }
+  .kv .v .ref { color: #b89a70; font-size: 12.5px; }
+  .kv .write-line { border-bottom: 1.5px dashed #e2cdb0; margin: 6px 0 0 0; }
+  .note-line {
+    font-size: 13px; color: #9a7a4a; border-top: 1px dotted #d9c9a8;
+    padding-top: 8px; margin-top: 10px; line-height: 1.6;
+  }
+  .note-line b { color: #7a5a2a; }
+
+  .sec-c { margin-top: 12px; }
+  .grid-c { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 14px; }
+  .c-box {
+    background: #fdf9f1; border: 1px solid #e8d8c0; border-radius: 8px;
+    padding: 10px 12px; display: flex; flex-direction: column;
+  }
+  .c-box .k { font-size: 13.5px; font-weight: bold; color: #8a5a2a; margin-bottom: 4px; }
+  .c-box .write-line { border-bottom: 1.5px dashed #e2cdb0; margin: 0; }
+
+  .footer-note {
+    margin-top: 12px; background: #faf6ef;
+    border: 1px dashed #d9b98a; border-radius: 10px;
+    padding: 6px 12px; font-size: 12.5px; color: #8a6a4a; line-height: 1.5;
+  }
+  .footer-note b { color: #6b4a2a; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ▼ 顶部 -->
+  <div class="header">
+    <img src="https://aka.doubaocdn.com/s/m8Spy7Qfkj" alt="沏茶问题配图">
+    <div class="header-text">
+      <h1>📖 预习速查卡（速查版）</h1>
+      <div class="meta">
+        <span>《沏茶问题》</span>
+        <span>人教版数学 · 四年级上册 · 第八单元</span>
+        <span>⏱ 10分钟 · 一页搞定</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ▼ A区：快速预习任务 -->
+  <div class="sec-a">
+    <div class="sec-title">① 快速预习任务（先做这 3 步）</div>
+    <div class="task-row">
+      <div class="t-num">1</div>
+      <div class="t-body"><b>读</b>：读一遍例题"沏茶问题"，看懂题目在问什么。</div>
+      <div class="t-check"></div>
+    </div>
+    <div class="task-row">
+      <div class="t-num">2</div>
+      <div class="t-body"><b>想</b>：自己排一个顺序，算算一共要几分钟：</div>
+      <div class="t-check"></div>
+    </div>
+    <div class="write-line"></div>
+    <div class="write-line"></div>
+    <div class="task-row">
+      <div class="t-num">3</div>
+      <div class="t-body"><b>说</b>：对照下面速查，用自己的话说说"为什么这样省时间"：</div>
+      <div class="t-check"></div>
+    </div>
+    <div class="write-line"></div>
+    <div class="write-line"></div>
+  </div>
+
+  <!-- ▼ B区：本课重点速查（长内容占整行，短内容并排） -->
+  <div class="sec-b">
+    <div class="sec-title">② 本课重点速查（数学版）</div>
+    <div class="grid">
+
+      <div class="kv">
+        <div class="k">▍核心概念</div>
+        <div class="v"><b>优化</b> = 先把事情排好顺序，能同时做的就同时做，用最少的时间把事情做完。</div>
+        <div class="write-line"></div>
+      </div>
+
+      <div class="kv">
+        <div class="k">▍易错点</div>
+        <div class="v">不是所有事都能同时做——有先后顺序的不能：水没烧好，就没法沏茶。</div>
+        <div class="write-line"></div>
+      </div>
+
+      <div class="kv kv-wide">
+        <div class="k">▍例题要点（6 件事）</div>
+        <div class="v">
+          洗水壶 1 分钟 · 接水 1 分钟 · 烧水 8 分钟 · 洗茶杯 2 分钟 · 找茶叶 1 分钟 · 沏茶 1 分钟。<br>
+          <b>关键：</b>烧水的 8 分钟里，可以同时洗茶杯、找茶叶。
+        </div>
+      </div>
+
+      <div class="kv kv-wide">
+        <div class="k">▍最短安排（参考）</div>
+        <div class="v">
+          洗水壶 → 接水 → 烧水（同时洗茶杯、找茶叶）→ 沏茶<br>
+          = 1 + 1 + 8 + 1 = <b>11 分钟</b><span class="ref">（一件一件做要 14 分钟）</span>
+        </div>
+        <div class="write-line"></div>
+      </div>
+
+    </div>
+    <div class="note-line">
+      <b>给孩子：</b>先自己排顺序再对速查——自己发现"同时做"比记住答案厉害。<br>
+      <b>给家长：</b>课堂会学"流程图"把顺序画成图；孩子能排出顺序、说出思路就达标。
+    </div>
+  </div>
+
+  <!-- ▼ C区：我的收获 & 我的问题 -->
+  <div class="sec-c">
+    <div class="sec-title">③ 我的收获 & 我的问题（上课带着去）</div>
+    <div class="grid-c">
+      <div class="c-box">
+        <div class="k">🌟 这课我最想记住的是</div>
+        <div class="write-line"></div>
+        <div class="write-line"></div>
+      </div>
+      <div class="c-box">
+        <div class="k">❓ 上课我要问</div>
+        <div class="write-line"></div>
+        <div class="write-line"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-note">
+    ✅ 三项任务都勾了 + 速查看过一遍 = 这课预习完成。带着"我的安排对不对"去上课。
+  </div>
+
+</div>
+</body>
+</html>
