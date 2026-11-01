@@ -375,13 +375,57 @@ function commandCapability(name, args = ['--version']) {
   const result = spawnSync(name, args, { encoding: 'utf8' });
   return { available: !result.error && result.status === 0, detail: (result.stdout || result.stderr || result.error?.message || '').trim().split('\n')[0] };
 }
+
+function commandPath(name) {
+  const command = process.platform === 'win32' ? 'where' : 'which';
+  const result = spawnSync(command, [name], { encoding: 'utf8' });
+  if (result.error || result.status !== 0) return '';
+  return (result.stdout || '').split(/\r?\n/u).map((value) => value.trim()).find(Boolean) ?? '';
+}
+
+export function browserExecutableCandidates() {
+  const candidates = [process.env.CHROME_PATH, process.env.EDGE_PATH, process.env.CHROMIUM_PATH];
+  if (process.platform === 'darwin') {
+    candidates.push(
+      '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+      '/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge',
+      '/Applications/Chromium.app/Contents/MacOS/Chromium',
+      '/Applications/Brave Browser.app/Contents/MacOS/Brave Browser',
+      resolve(process.env.HOME || '/', 'Applications/Google Chrome.app/Contents/MacOS/Google Chrome'),
+      resolve(process.env.HOME || '/', 'Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge'),
+    );
+  } else if (process.platform === 'win32') {
+    const programFiles = [process.env.PROGRAMFILES, process.env['PROGRAMFILES(X86)'], process.env.LOCALAPPDATA].filter(Boolean);
+    for (const root of programFiles) {
+      candidates.push(
+        resolve(root, 'Google/Chrome/Application/chrome.exe'),
+        resolve(root, 'Microsoft/Edge/Application/msedge.exe'),
+        resolve(root, 'Chromium/Application/chrome.exe'),
+        resolve(root, 'BraveSoftware/Brave-Browser/Application/brave.exe'),
+      );
+    }
+  } else {
+    for (const name of ['google-chrome', 'google-chrome-stable', 'chromium', 'chromium-browser', 'microsoft-edge', 'microsoft-edge-stable', 'brave-browser']) {
+      candidates.push(commandPath(name));
+    }
+  }
+  return [...new Set(candidates.filter((value) => typeof value === 'string' && value.trim() !== ''))];
+}
+
+export function findSystemBrowserExecutable() {
+  return browserExecutableCandidates().find(existsSync) ?? '';
+}
+
 async function runtimeReport() {
-  const playwright = await import('@playwright/test').then(() => ({ available: true, detail: 'module resolved' })).catch((error) => ({ available: false, detail: error.message }));
-  const chromiumPaths = [process.env.CHROMIUM_PATH, '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'].filter(Boolean);
+  const playwrightCore = await import('playwright-core').then(() => ({ available: true, detail: 'module resolved; browser download is not included' })).catch((error) => ({ available: false, detail: error.message }));
+  const browserExecutable = findSystemBrowserExecutable();
   return {
     node: { available: Number(process.versions.node.split('.')[0]) >= 18, detail: process.version },
-    playwright,
-    chromium: { available: chromiumPaths.some(existsSync), detail: chromiumPaths.find(existsSync) ?? 'Playwright-managed browser not probed' },
+    playwrightCore,
+    chromium: {
+      available: Boolean(browserExecutable),
+      detail: browserExecutable || '未找到本机 Chrome、Edge 或 Chromium；如 Playwright 缓存中也没有浏览器，渲染时才需要另行下载',
+    },
     imagemagick: commandCapability('magick'), sips: commandCapability('sips'), getnote: commandCapability(process.env.GETNOTE_BIN || 'getnote'),
   };
 }
@@ -401,7 +445,7 @@ async function main() {
   const args = parseArgs(process.argv.slice(2)); const action = typeof args.action === 'string' ? args.action : 'validate';
   if (action === 'runtime') {
     const report = await runtimeReport(); process.stdout.write(`${JSON.stringify(report, null, 2)}\n`);
-    if (!report.node.available || !report.playwright.available) process.exitCode = 1;
+    if (!report.node.available || !report.playwrightCore.available) process.exitCode = 1;
     return;
   }
   if (action === 'manifest') { process.stdout.write(`${JSON.stringify(buildManifest(args), null, 2)}\n`); return; }

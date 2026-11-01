@@ -15,6 +15,7 @@ import {
 import path, { basename, dirname, relative, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import {
+  findSystemBrowserExecutable,
   imageSize,
   PACKAGE_GENERATOR,
   parseArgs,
@@ -113,12 +114,13 @@ export function writeViewerHtml({ cardSet, outputDir, downloads = new Map(), out
 
 async function launchChromium() {
   let chromium;
-  try { ({ chromium } = await import('@playwright/test')); } catch { throw new Error('缺少 @playwright/test；请先在 Skill 目录安装声明的依赖'); }
-  if (process.env.CHROMIUM_PATH) return chromium.launch({ headless: true, executablePath: process.env.CHROMIUM_PATH });
-  try { return await chromium.launch({ headless: true }); } catch (firstError) {
-    const chrome = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
-    if (existsSync(chrome)) return chromium.launch({ headless: true, executablePath: chrome });
-    throw firstError;
+  try { ({ chromium } = await import('playwright-core')); } catch { throw new Error('缺少 playwright-core；请先在 Skill 目录运行 npm install'); }
+  const systemBrowser = findSystemBrowserExecutable();
+  if (systemBrowser) return chromium.launch({ headless: true, executablePath: systemBrowser });
+  try {
+    return await chromium.launch({ headless: true });
+  } catch (error) {
+    throw new Error(`未找到可用的 Chrome、Edge 或 Chromium。可设置 CHROME_PATH、EDGE_PATH 或 CHROMIUM_PATH 指向本机浏览器；只有机器上完全没有 Chromium 内核浏览器时，才需要运行 npx playwright install chromium。原始错误：${error instanceof Error ? error.message : String(error)}`);
   }
 }
 async function loadOffline(page, htmlFile, consoleErrors, networkRequests) {
@@ -146,8 +148,17 @@ export async function captureCardImages({ htmlFile, cardSet, outputDir }) {
       for (const face of ['front', 'back']) {
         await page.evaluate(({ id, targetFace, fitLevel }) => { window.cardStudio.show(id, targetFace); window.cardStudio.fit(fitLevel); }, { id: card.id, targetFace: face, fitLevel: fit.level });
         await page.evaluate(() => new Promise((done) => requestAnimationFrame(() => requestAnimationFrame(done))));
-        const file = resolve(cardDir, `card-${face}.png`); const first = await page.locator('#captureSurface').screenshot({ path: file, animations: 'disabled', omitBackground: true }); const second = await page.locator('#captureSurface').screenshot({ animations: 'disabled', omitBackground: true });
-        if (sha256(first) !== sha256(second)) throw new Error(`重复截图哈希不稳定：${card.id}/${face}`);
+        await page.evaluate(async () => { if (document.fonts?.ready) await document.fonts.ready; });
+        const file = resolve(cardDir, `card-${face}.png`); const surface = page.locator('#captureSurface');
+        let previous = await surface.screenshot({ animations: 'disabled', omitBackground: true }); let stable = null;
+        for (let attempt = 0; attempt < 3; attempt += 1) {
+          await page.evaluate(() => new Promise((done) => requestAnimationFrame(() => requestAnimationFrame(done))));
+          const current = await surface.screenshot({ animations: 'disabled', omitBackground: true });
+          if (sha256(previous) === sha256(current)) { stable = current; break; }
+          previous = current;
+        }
+        if (!stable) throw new Error(`重复截图哈希不稳定：${card.id}/${face}`);
+        writeFileSync(file, stable);
         const size = imageSize(file); if (!size || size.format !== 'png' || size.width !== 1080 || size.height !== 1620) throw new Error(`导出尺寸错误：${file} ${JSON.stringify(size)}`);
         files.push({ cardId: card.id, face, file, ...size, sha256: sha256File(file), stableHash: true, fitLevel: fit.level });
       }

@@ -3,7 +3,7 @@ name: cairn-parenting-card-maker
 slug: cairn-parenting-card-maker
 displayName: Cairn · 亲子话题卡
 display_name: 亲子话题卡
-version: 1.0.0
+version: 1.1.0
 summary: "把用户粘贴的亲子对话、家庭访谈或可选 Get笔记记录提炼成零到多张证据可定位的话题卡，使用大模型生成插画，并交付可点击离线 HTML 与可下载正反面 PNG。用户说‘从这段亲子对话做卡片/提取多个话题/生成亲子话题卡’时使用；材料不足返回零张，不编造原话。"
 license: MIT
 description: 将用户粘贴的亲子对话、家庭访谈、文本文件或可选 Get笔记记录，提炼为零到多张有证据定位的亲子话题卡；使用大模型生成风格一致的栅格插画，并输出可点击的离线 HTML 与可下载的正反面 PNG。适用于亲子话题卡提取、候选评审、批量制卡，以及经明确授权的 Get笔记或 Talkcard 草稿适配。
@@ -21,16 +21,27 @@ description: 将用户粘贴的亲子对话、家庭访谈、文本文件或可�
    - `complete`：用户要求最终成品时，继续生图和渲染。
    - `review`：先给用户确认，不提前生图。
    - `stop`：返回零张及原因。
-4. 对每张已通过候选，调用图像生成模型生成栅格插画。插画只画情境，不画卡片文字、标签或 Logo；禁止用 SVG、程序化图形或占位图替代。
-5. 将图片规范化为 `870×660 JPEG`，写回 `card.illustration.file`，再生成离线 HTML 和 `1080×1620` 正反面 PNG。
-6. 打开最终 HTML 验收点击、键盘翻面、单卡/多卡导航、下载文件名、移动端、桌面端、离线运行和文本溢出。
+4. 先为整批卡牌规划 `subjectMode / scene / action / setting / shot / composition / palette`，避免连续使用同一男孩、同一机位和同一场景。内容不限定身份时，主动在女孩、男孩、多人、亲子、物件和环境隐喻之间分配。
+5. 用 `image.mjs --action prompt` 生成确定性提示词，并把返回的 `referenceImage` 作为图像参考随提示词一起传给生图模型。风格板只用于线条、平涂、留白和简化程度，禁止照抄人物、场景或四宫格布局。
+6. 多卡时先生成一张“风格校准图”，按返回的 `acceptance` 验收；不通过就重生，不能带着错误画风继续批量生成。通过后，其他卡复用完全相同的风格段、参考图和验收标准。
+7. 插画只画一个横向情境，不画卡片文字、标签、Logo、校徽或 UI；禁止用 SVG、程序化图形或占位图替代。
+8. 将通过验收的图片规范化为 `870×660 JPEG`，写回 `card.illustration.file`，再生成离线 HTML 和 `1080×1620` 正反面 PNG。
+9. 打开最终 HTML 验收点击、键盘翻面、单卡/多卡导航、下载文件名、移动端、桌面端、离线运行和文本溢出。
 
 ```bash
 printf '%s' "$CONVERSATION" | node <skill-dir>/scripts/source.mjs --stdin
 node <skill-dir>/scripts/core.mjs --input <candidate-set.json>
-node <skill-dir>/scripts/image.mjs --input <model-image> --output <asset-root>/<candidate-id>.jpg
+node <skill-dir>/scripts/image.mjs --action prompt --input <candidate-set.json> --candidate-id <candidate-id>
+node <skill-dir>/scripts/image.mjs --action normalize --input <model-image> --output <asset-root>/<candidate-id>.jpg
 node <skill-dir>/scripts/render.mjs --input <candidate-set.json> --asset-root <asset-root> --output-dir <package-dir>
 ```
+
+## 运行依赖
+
+- Node.js 18 或更高版本；在 Skill 目录运行 `npm install` 只安装轻量的 `playwright-core`，不会自动下载 Chromium。
+- 渲染时优先复用本机已有的 Google Chrome、Microsoft Edge、Chromium 或 Brave。非标准安装位置可通过 `CHROME_PATH`、`EDGE_PATH` 或 `CHROMIUM_PATH` 指定。
+- 只有机器上完全没有 Chromium 内核浏览器，且 Playwright 缓存中也没有可用浏览器时，才需要运行 `npx playwright install chromium`。
+- 图片规范化需要 ImageMagick，macOS 也可使用系统自带的 `sips`；Get笔记命令仅在使用可选适配器时需要。
 
 ## 证据与隐私
 
