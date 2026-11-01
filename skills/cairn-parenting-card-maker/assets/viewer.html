@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src data:; style-src 'unsafe-inline'; script-src 'unsafe-inline';">
+  <title>__DOCUMENT_TITLE__</title>
+  <style>__THEME_CSS__</style>
+  <script>window.__CARD_STUDIO_DATA__ = __CARD_DATA__;</script>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="viewer-header">
+      <p class="eyebrow">CONVERSATION CARDS</p>
+      <h1 id="deckTitle"></h1>
+      <p id="sourceTitle" class="source-title"></p>
+    </header>
+    <main class="viewer-main">
+      <p id="announcement" class="sr-only" aria-live="polite"></p>
+      <div class="capture-frame"><div id="captureSurface" class="capture-surface">
+        <article id="card" class="card" data-face="front">
+          <div id="flipper" class="card-flipper" role="button" tabindex="0" aria-pressed="false" aria-label="翻到背面">
+            <section class="card-face card-front" aria-hidden="false">
+              <div class="tape" aria-hidden="true"></div>
+              <div id="photo" class="photo"><img id="illustration" alt="" draggable="false"></div>
+              <div id="sticker" class="sticker" aria-hidden="true"></div>
+              <div class="caption"><p id="frontSeries" class="series-mark"></p><p id="cardTitle" class="card-title"></p><p id="frontText" class="front-copy"></p></div>
+            </section>
+            <section class="card-face card-back" aria-hidden="true"><div id="backSections" class="back-scroll"></div></section>
+          </div>
+        </article>
+      </div></div>
+      <div id="viewerStatus" class="viewer-status"><span id="position"></span><span id="category"></span></div>
+      <nav class="controls" aria-label="卡牌控制"><button id="previousButton" type="button">上一张</button><button id="flipButton" type="button">翻面</button><button id="nextButton" type="button">下一张</button></nav>
+      <div class="downloads" aria-label="下载当前卡牌"><a id="downloadFront" href="#" aria-disabled="true">下载正面 PNG</a><a id="downloadBack" href="#" aria-disabled="true">下载背面 PNG</a></div>
+    </main>
+  </div>
+  <script>
+  (() => {
+    'use strict';
+    const data = window.__CARD_STUDIO_DATA__;
+    if (!data || !Array.isArray(data.cards) || data.cards.length === 0) throw new Error('卡牌数据为空');
+    const byId = (id) => document.getElementById(id);
+    const refs = {
+      deckTitle: byId('deckTitle'), sourceTitle: byId('sourceTitle'), announcement: byId('announcement'), card: byId('card'),
+      flipper: byId('flipper'), photo: byId('photo'), illustration: byId('illustration'), sticker: byId('sticker'),
+      frontSeries: byId('frontSeries'), cardTitle: byId('cardTitle'), frontText: byId('frontText'), backSections: byId('backSections'),
+      status: byId('viewerStatus'), position: byId('position'), category: byId('category'), previous: byId('previousButton'),
+      flip: byId('flipButton'), next: byId('nextButton'), downloadFront: byId('downloadFront'), downloadBack: byId('downloadBack'),
+    };
+    const state = { index: 0, face: 'front' };
+    const create = (tag, className, value) => { const node = document.createElement(tag); if (className) node.className = className; if (value !== undefined) node.textContent = value; return node; };
+    function updateDownload(anchor, url, filename) {
+      if (url) { anchor.href = url; anchor.download = filename; anchor.setAttribute('aria-disabled', 'false'); }
+      else { anchor.href = '#'; anchor.removeAttribute('download'); anchor.setAttribute('aria-disabled', 'true'); }
+    }
+    function renderSections(card) {
+      const heading = create('div', 'back-heading');
+      heading.append(create('span', '', data.deck.title), create('span', '', card.category.label));
+      const nodes = card.back.sections.map((section, index) => {
+        const restricted = Boolean(section.audience); const wrapper = create('section', `layer layer-${index % 4}${restricted ? ' is-restricted' : ''}`); const title = create('h2', '', section.label);
+        if (restricted) title.append(create('span', 'audience-tag', section.audienceLabel || section.audience));
+        wrapper.append(title); if (section.note) wrapper.append(create('p', 'layer-note', section.note)); wrapper.append(create('p', '', section.body)); return wrapper;
+      });
+      refs.backSections.replaceChildren(heading, ...nodes);
+    }
+    function measureLayout() {
+      const front = refs.card.querySelector('.card-front'); const back = refs.card.querySelector('.back-scroll'); const caption = refs.card.querySelector('.caption');
+      return { frontOverflow: caption.scrollHeight > caption.clientHeight + 1 || front.scrollHeight > front.clientHeight + 1, backOverflow: back.scrollHeight > back.clientHeight + 1, caption: { scroll: caption.scrollHeight, client: caption.clientHeight }, back: { scroll: back.scrollHeight, client: back.clientHeight } };
+    }
+    function applyFit(level = 'normal') { refs.card.classList.remove('fit-compact', 'fit-tight'); if (level === 'compact') refs.card.classList.add('fit-compact'); if (level === 'tight') refs.card.classList.add('fit-tight'); return level; }
+    function fitCurrent() {
+      for (const level of ['normal', 'compact', 'tight']) { applyFit(level); const measured = measureLayout(); if (!measured.frontOverflow && !measured.backOverflow) return { level, measured }; }
+      return { level: 'tight', measured: measureLayout() };
+    }
+    function setFace(face, announce = true) {
+      state.face = face === 'back' ? 'back' : 'front'; const back = state.face === 'back';
+      refs.card.classList.toggle('is-back', back); refs.card.dataset.face = state.face; refs.flipper.setAttribute('aria-pressed', String(back)); refs.flipper.setAttribute('aria-label', back ? '翻回正面' : '翻到背面');
+      refs.card.querySelector('.card-front').setAttribute('aria-hidden', String(back)); refs.card.querySelector('.card-back').setAttribute('aria-hidden', String(!back)); refs.flip.textContent = back ? '回正面' : '翻面';
+      if (announce) refs.announcement.textContent = `${data.cards[state.index].title}，${back ? '背面' : '正面'}`;
+    }
+    function render() {
+      const card = data.cards[state.index]; applyFit('normal');
+      refs.deckTitle.textContent = data.deck.title; refs.sourceTitle.textContent = data.sourceTitle; refs.photo.style.background = card.category.color; refs.card.style.setProperty('--deck-color', card.category.color);
+      refs.illustration.src = card.illustration.dataUrl; refs.illustration.alt = card.illustration.alt || ''; refs.sticker.replaceChildren(...card.category.lines.map((line) => create('span', '', line)));
+      refs.frontSeries.textContent = data.deck.title; refs.cardTitle.textContent = card.title; refs.frontText.textContent = card.front.text; refs.frontText.className = 'front-copy';
+      const length = Array.from(card.front.text).length; if (length > 34) refs.frontText.classList.add('is-long'); else if (length > 20) refs.frontText.classList.add('is-medium');
+      renderSections(card); const multiple = data.cards.length > 1;
+      refs.position.textContent = `${state.index + 1} / ${data.cards.length}`; refs.position.hidden = !multiple; refs.previous.hidden = !multiple; refs.next.hidden = !multiple; refs.status.classList.toggle('is-single', !multiple); refs.category.textContent = card.category.label;
+      refs.previous.disabled = state.index === 0; refs.next.disabled = state.index === data.cards.length - 1;
+      updateDownload(refs.downloadFront, card.downloads?.front, `${card.id}-front.png`); updateDownload(refs.downloadBack, card.downloads?.back, `${card.id}-back.png`); setFace(state.face, false); fitCurrent();
+    }
+    function flip() { setFace(state.face === 'front' ? 'back' : 'front'); }
+    function move(delta) { const next = Math.max(0, Math.min(data.cards.length - 1, state.index + delta)); if (next === state.index) return; state.index = next; state.face = 'front'; render(); refs.announcement.textContent = `${data.cards[state.index].title}，正面`; }
+    refs.flipper.addEventListener('click', flip);
+    refs.flipper.addEventListener('keydown', (event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); flip(); } });
+    refs.flip.addEventListener('click', flip); refs.previous.addEventListener('click', () => move(-1)); refs.next.addEventListener('click', () => move(1));
+    for (const anchor of [refs.downloadFront, refs.downloadBack]) anchor.addEventListener('click', (event) => { if (anchor.getAttribute('aria-disabled') === 'true') event.preventDefault(); });
+    window.cardStudio = {
+      show(cardId, face = 'front') { const index = data.cards.findIndex((card) => card.id === cardId); if (index < 0) throw new Error(`找不到卡牌：${cardId}`); state.index = index; state.face = face === 'back' ? 'back' : 'front'; render(); return { ...state }; },
+      fit: applyFit, fitCurrent, measure: measureLayout, getState() { return { ...state }; }, getCardCount() { return data.cards.length; },
+    };
+    render();
+  })();
+  </script>
+</body>
+</html>

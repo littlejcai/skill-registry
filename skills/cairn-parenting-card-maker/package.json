@@ -1,0 +1,8 @@
+{
+  "name": "cairn-parenting-card-maker-skill",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=18" },
+  "scripts": { "check-runtime": "node scripts/core.mjs --action runtime" },
+  "dependencies": { "@playwright/test": "1.48.2" }
+}

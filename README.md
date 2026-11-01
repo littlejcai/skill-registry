@@ -17,13 +17,14 @@ skills/
 
 **cairn** /ˈkɛərn/，垒石为标——把每一次练习，垒成学习的路标。
 
-自研 skill 统一按 `cairn-<domain>-<capability>` 命名（domain：math / chinese / english / parenting / study / edu；capability：review / diagnose / preview / visual / error-book / quiz / mentor / grader / planner / explainer / coach）。SKILL.md 头部为超集 frontmatter：`name` 与 `slug` 同值（GitHub / SkillHub / 豆包四端一个 ID），含 `displayName`（Cairn · 中文名）、`version`、`summary`（平台检索用：能力+触发+边界）与 `license`。
+自研 skill 统一按 `cairn-<domain>-<capability>` 命名（domain：math / chinese / english / parenting / study / edu；capability：review / diagnose / preview / visual / error-book / card-maker / quiz / mentor / grader / planner / explainer / coach）。SKILL.md 头部为超集 frontmatter：`name` 与 `slug` 同值（GitHub / SkillHub / 豆包四端一个 ID），含 `displayName`（Cairn · 中文名）、`version`、`summary`（平台检索用：能力+触发+边界）与 `license`。
 
 ## 技能列表
 
 | 技能 | 说明 | 来源 |
 | --- | --- | --- |
 | [cairn-english-review](skills/cairn-english-review/SKILL.md) | 把英语口语练习对话（豆包链接/聊天记录/转录文本）整理成复盘文档：四类错误归因、逐句对照、词汇清单与改进建议，交付飞书文档；可按需生成竖版分享卡片（朋友圈/小红书） | 本仓库 |
+| [cairn-parenting-card-maker](skills/cairn-parenting-card-maker/SKILL.md) | 从亲子对话中提取零到多张证据可定位的话题卡，使用大模型生成情境插画，交付可点击离线 HTML 和可下载正反面 PNG；材料不足时返回零张 | 本仓库 |
 | [cairn-study-preview](skills/cairn-study-preview/SKILL.md) | 课前预习三档物料（速查卡/好奇单/探索卡），覆盖语文/数学/英语/科学：先核实教材内容，再按六步动作链（看→读→圈→想→说→问）生成一页 A4 预习单或六幕探索卡；含打印版 HTML 模板与 12 份样卡 | 本仓库 |
 | [cairn-math-visual](skills/cairn-math-visual/SKILL.md) | 把小学数学题或抽象概念变成"看图就懂"的可视化讲解（线段图/分物图/方格面积等），产出自包含 Markdown | 本仓库 |
 | [cairn-study-diagnose](skills/cairn-study-diagnose/SKILL.md) | 错题四类归因记入学习档案，针对弱点生成带机器验证的变式练习卷并自动判题 | 本仓库 |

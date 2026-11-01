@@ -1,0 +1,4 @@
+interface:
+  display_name: "Cairn · 亲子话题卡"
+  short_description: "从亲子对话提取零到多张卡牌并生成可点击 HTML 与正反面图片"
+  default_prompt: "使用 $cairn-parenting-card-maker 从这份亲子对话中提取零到多张符合标准的卡牌；高置信度时生成模型插画、可点击 HTML 和可下载的正反面图片，需评审或材料不足时先停下说明。"
