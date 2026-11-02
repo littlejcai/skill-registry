@@ -3,7 +3,7 @@ name: cairn-parenting-card-maker
 slug: cairn-parenting-card-maker
 displayName: Cairn · 亲子话题卡
 display_name: 亲子话题卡
-version: 1.1.1
+version: 1.1.2
 summary: "把用户粘贴的亲子对话、家庭访谈或可选 Get笔记记录提炼成零到多张证据可定位的话题卡，使用大模型生成插画，并交付可点击离线 HTML 与可下载正反面 PNG。用户说‘从这段亲子对话做卡片/提取多个话题/生成亲子话题卡’时使用；材料不足返回零张，不编造原话。"
 license: MIT
 description: 将用户粘贴的亲子对话、家庭访谈、文本文件或可选 Get笔记记录，提炼为零到多张有证据定位的亲子话题卡；使用大模型生成风格一致的栅格插画，并输出可点击的离线 HTML 与可下载的正反面 PNG。适用于亲子话题卡提取、候选评审、批量制卡，以及经明确授权的 Get笔记或 Talkcard 草稿适配。
@@ -18,11 +18,11 @@ description: 将用户粘贴的亲子对话、家庭访谈、文本文件或可�
 1. 优先读取当前消息中的对话。需要落盘处理时，通过 `source.mjs --stdin` 导入；只有用户给出文件或 Get笔记 ID 时，才使用对应来源参数。
 2. 阅读 [卡牌规则](references/card-rules.md)，按独立话题提取候选并保留证据定位。同一对话可以产生多张卡，但每张必须有不同的核心张力和追问方向。
 3. 生成 `candidate-set@2.1.0`，运行校验并严格遵循 `nextAction`：
-   - `complete`：用户要求最终成品时，继续生图和渲染。
+   - `complete`：用户要求最终成品时，继续生图和渲染。该状态只表示可以进入生图阶段，不代表可以直接渲染——插画仍需逐张补齐并通过验收。
    - `review`：先给用户确认，不提前生图。
    - `stop`：返回零张及原因。
 4. 先为整批卡牌规划 `subjectMode / scene / action / setting / shot / composition / palette`，避免连续使用同一男孩、同一机位和同一场景。内容不限定身份时，主动在女孩、男孩、多人、亲子、物件和环境隐喻之间分配。
-5. 用 `image.mjs --action prompt` 生成确定性提示词，并把返回的 `referenceImage` 作为图像参考随提示词一起传给生图模型。风格板只用于线条、平涂、留白和简化程度，禁止照抄人物、场景或四宫格布局。
+5. 用 `image.mjs --action prompt` 生成确定性提示词，并把返回的 `referenceImage` 作为图像参考随提示词一起传给生图模型。风格板只用于线条、平涂、留白和简化程度，禁止照抄人物、场景或四宫格布局。本 Skill 不绑定服务商；选通道前先读 [生图通道要求](references/image-channel.md)，任一条不满足就换通道，没有合格通道时停在 `review` 并说明缺哪一种能力。
 6. 多卡时先生成一张“风格校准图”，按返回的 `acceptance` 验收；不通过就重生，不能带着错误画风继续批量生成。通过后，其他卡复用完全相同的风格段、参考图和验收标准。
 7. 插画只画一个横向情境，不画卡片文字、标签、Logo、校徽或 UI；禁止用 SVG、程序化图形或占位图替代。
 8. 将通过验收的图片规范化为 `870×660 JPEG`，写回 `card.illustration.file`，再生成离线 HTML 和 `1080×1620` 正反面 PNG。
