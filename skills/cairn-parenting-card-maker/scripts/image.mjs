@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 import { spawnSync } from 'node:child_process';
-import { existsSync, mkdtempSync, mkdirSync, rmSync } from 'node:fs';
+import { existsSync, mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import os from 'node:os';
 import path, { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
-import { imageSize, parseArgs, readJson, requireArg, sha256File, skillRoot } from './core.mjs';
+import { findSystemBrowserExecutable, imageSize, parseArgs, readJson, requireArg, sha256File, skillRoot } from './core.mjs';
 
 const STYLE_REFERENCE = resolve(skillRoot, 'assets/style-reference.jpg');
 const SUBJECT_MODES = new Set(['girl', 'boy', 'mixed-group', 'child-adult', 'object-detail', 'environment-metaphor']);
@@ -75,8 +75,10 @@ export function promptForCandidateSet(input, candidateId) {
 }
 
 function commandPath(name) {
-  const result = spawnSync('which', [name], { encoding: 'utf8' });
-  return result.status === 0 ? result.stdout.trim() : '';
+  const command = process.platform === 'win32' ? 'where' : 'which';
+  const result = spawnSync(command, [name], { encoding: 'utf8' });
+  if (result.error || result.status !== 0) return '';
+  return (result.stdout || '').split(/\r?\n/u).map((value) => value.trim()).find(Boolean) ?? '';
 }
 function run(command, args) {
   const result = spawnSync(command, args, { encoding: 'utf8' });
@@ -85,7 +87,48 @@ function run(command, args) {
   return result.stdout;
 }
 
-export function normalizeIllustration({ input, output }) {
+function sniffMime(file) {
+  const bytes = readFileSync(file);
+  if (bytes.length >= 3 && bytes[0] === 0x89 && bytes[1] === 0x50 && bytes[2] === 0x4e) return 'image/png';
+  return 'image/jpeg';
+}
+
+// 不需要额外安装任何图片工具的规范化路径：复用渲染环节本就必需的 Chromium。
+// 把图片以 data: URL 注入空白页，画到 870x660 canvas 上居中裁切后导出 JPEG 88。
+export async function normalizeWithBrowser({ source, target }) {
+  let chromium;
+  try { ({ chromium } = await import('playwright-core')); } catch { throw new Error('缺少 playwright-core；请先在 Skill 目录运行 npm install'); }
+  const executablePath = findSystemBrowserExecutable();
+  if (!executablePath) throw new Error('未找到 Chrome、Edge 或 Chromium：图片规范化复用渲染所用的浏览器；可用 CHROME_PATH、EDGE_PATH 或 CHROMIUM_PATH 指定');
+  const browser = await chromium.launch({ headless: true, executablePath });
+  try {
+    const browserContext = await browser.newContext({ viewport: { width: 870, height: 660 }, deviceScaleFactor: 1 });
+    const page = await browserContext.newPage();
+    await page.setContent('<!doctype html><meta charset="utf-8"><title>normalize</title>');
+    const dataUrl = `data:${sniffMime(source)};base64,${readFileSync(source).toString('base64')}`;
+    const encoded = await page.evaluate(async ({ dataUrl }) => {
+      const image = new Image();
+      image.src = dataUrl;
+      if (typeof image.decode === 'function') await image.decode();
+      else await new Promise((done, fail) => { image.onload = done; image.onerror = () => fail(new Error('图片解码失败')); });
+      if (!image.naturalWidth || !image.naturalHeight) throw new Error('图片尺寸为 0，无法规范化');
+      const canvas = document.createElement('canvas');
+      canvas.width = 870; canvas.height = 660;
+      const surface = canvas.getContext('2d');
+      surface.imageSmoothingEnabled = true; surface.imageSmoothingQuality = 'high';
+      surface.fillStyle = '#ffffff'; surface.fillRect(0, 0, 870, 660);
+      const scale = Math.max(870 / image.naturalWidth, 660 / image.naturalHeight);
+      const width = image.naturalWidth * scale; const height = image.naturalHeight * scale;
+      surface.drawImage(image, (870 - width) / 2, (660 - height) / 2, width, height);
+      return canvas.toDataURL('image/jpeg', 0.88).split(',')[1];
+    }, { dataUrl });
+    writeFileSync(target, Buffer.from(encoded, 'base64'));
+    await browserContext.close();
+  } finally { await browser.close(); }
+  return target;
+}
+
+export async function normalizeIllustration({ input, output }) {
   const source = resolve(input); const target = resolve(output);
   if (!existsSync(source)) throw new Error(`输入图片不存在：${source}`);
   if (source === target) throw new Error('输入和输出不能是同一文件');
@@ -106,7 +149,7 @@ export function normalizeIllustration({ input, output }) {
       run(sips, ['--cropToHeightWidth', String(cropHeight), String(cropWidth), source, '--out', cropped]);
       run(sips, ['--resampleHeightWidth', '660', '870', '--setProperty', 'format', 'jpeg', '--setProperty', 'formatOptions', '88', cropped, '--out', target]);
     } finally { rmSync(temporary, { recursive: true, force: true }); }
-  } else throw new Error('缺少图片规范化工具：请安装 ImageMagick，或在 macOS 使用系统 sips');
+  } else await normalizeWithBrowser({ source, target });
   const size = imageSize(target);
   if (!size || size.format !== 'jpeg' || size.width !== 870 || size.height !== 660) throw new Error(`规范化结果必须是 870x660 JPEG，实际为 ${JSON.stringify(size)}`);
   return { output: target, ...size, sha256: sha256File(target) };
@@ -121,7 +164,7 @@ if (invoked) {
       const result = promptForCandidateSet(readJson(resolve(requireArg(args, 'input'))), requireArg(args, 'candidate-id'));
       process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
     } else if (action === 'normalize') {
-      process.stdout.write(`${JSON.stringify(normalizeIllustration({ input: requireArg(args, 'input'), output: requireArg(args, 'output') }), null, 2)}\n`);
+      process.stdout.write(`${JSON.stringify(await normalizeIllustration({ input: requireArg(args, 'input'), output: requireArg(args, 'output') }), null, 2)}\n`);
     } else throw new Error('--action 仅支持 prompt 或 normalize');
   } catch (error) { process.stderr.write(`${error instanceof Error ? error.message : String(error)}\n`); process.exitCode = 1; }
 }
