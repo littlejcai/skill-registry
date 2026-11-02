@@ -8,7 +8,7 @@ import { atomicReplaceDirectory, createStagingDirectory } from './render.mjs';
 
 const DECKS = new Set(['study-drive', 'study-method', 'rules-fairness', 'school-relations', 'self-awareness', 'family-life']);
 
-export function exportTalkcardDraft({ input, assetRoot, outputDir, contentVersion, startNo }) {
+export async function exportTalkcardDraft({ input, assetRoot, outputDir, contentVersion, startNo }) {
   const number = Number(startNo);
   if (!Number.isInteger(number) || number < 1 || number > 99) throw new Error('--start-no 必须是 1..99 的整数');
   const validation = validateCandidateSet(readJson(resolve(input)));
@@ -23,7 +23,7 @@ export function exportTalkcardDraft({ input, assetRoot, outputDir, contentVersio
       if (!candidate.cardNoteId || !String(candidate.cardNoteId).trim()) throw new Error(`${candidate.candidateId} 缺少已验证 cardNoteId`);
       if (!DECKS.has(candidate.card.categoryId)) throw new Error(`${candidate.candidateId} 的牌堆不合法：${candidate.card.categoryId}`);
       if (!existsSync(source)) throw new Error(`${candidate.candidateId} 插画不存在`);
-      normalizeIllustration({ input: source, output: image });
+      await normalizeIllustration({ input: source, output: image });
       const sections = new Map(candidate.card.back.sections.map((section) => [section.id, section]));
       for (const id of ['followup', 'deeper', 'observer']) if (!sections.has(id)) throw new Error(`${candidate.candidateId} 缺少 ${id}`);
       cards.push({
@@ -44,7 +44,7 @@ const invoked = process.argv[1] && import.meta.url === pathToFileURL(resolve(pro
 if (invoked) {
   try {
     const args = parseArgs(process.argv.slice(2));
-    const result = exportTalkcardDraft({ input: requireArg(args, 'input'), assetRoot: requireArg(args, 'asset-root'), outputDir: requireArg(args, 'output-dir'), contentVersion: requireArg(args, 'content-version'), startNo: requireArg(args, 'start-no') });
+    const result = await exportTalkcardDraft({ input: requireArg(args, 'input'), assetRoot: requireArg(args, 'asset-root'), outputDir: requireArg(args, 'output-dir'), contentVersion: requireArg(args, 'content-version'), startNo: requireArg(args, 'start-no') });
     process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
   } catch (error) { process.stderr.write(`${error instanceof Error ? error.message : String(error)}\n`); process.exitCode = 1; }
 }

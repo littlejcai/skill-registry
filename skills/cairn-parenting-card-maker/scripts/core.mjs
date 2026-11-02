@@ -419,6 +419,13 @@ export function findSystemBrowserExecutable() {
 async function runtimeReport() {
   const playwrightCore = await import('playwright-core').then(() => ({ available: true, detail: 'module resolved; browser download is not included' })).catch((error) => ({ available: false, detail: error.message }));
   const browserExecutable = findSystemBrowserExecutable();
+  const imagemagick = commandCapability('magick'); const sips = commandCapability('sips');
+  // 图片规范化有三条路径：ImageMagick → macOS sips → 复用渲染所必需的 Chromium。
+  // 前两者是可选的加速/兼容项：缺省时 Chromium 路径即可完成 870x660 JPEG 规范化，无需额外安装。
+  const imageNormalization = imagemagick.available ? { available: true, via: 'imagemagick', detail: imagemagick.detail }
+    : sips.available ? { available: true, via: 'sips', detail: sips.detail }
+      : browserExecutable ? { available: true, via: 'chromium', detail: '无需 ImageMagick：使用本机 Chromium 内核浏览器完成封面裁切与 JPEG 导出' }
+        : { available: false, via: 'none', detail: '需要 ImageMagick、macOS sips 或任意 Chromium 内核浏览器之一' };
   return {
     node: { available: Number(process.versions.node.split('.')[0]) >= 18, detail: process.version },
     playwrightCore,
@@ -426,7 +433,8 @@ async function runtimeReport() {
       available: Boolean(browserExecutable),
       detail: browserExecutable || '未找到本机 Chrome、Edge 或 Chromium；如 Playwright 缓存中也没有浏览器，渲染时才需要另行下载',
     },
-    imagemagick: commandCapability('magick'), sips: commandCapability('sips'), getnote: commandCapability(process.env.GETNOTE_BIN || 'getnote'),
+    imageNormalization,
+    imagemagick, sips, getnote: commandCapability(process.env.GETNOTE_BIN || 'getnote'),
   };
 }
 function buildManifest(args) {

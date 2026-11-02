@@ -3,7 +3,7 @@ name: cairn-parenting-card-maker
 slug: cairn-parenting-card-maker
 displayName: Cairn · 亲子话题卡
 display_name: 亲子话题卡
-version: 1.1.0
+version: 1.1.1
 summary: "把用户粘贴的亲子对话、家庭访谈或可选 Get笔记记录提炼成零到多张证据可定位的话题卡，使用大模型生成插画，并交付可点击离线 HTML 与可下载正反面 PNG。用户说‘从这段亲子对话做卡片/提取多个话题/生成亲子话题卡’时使用；材料不足返回零张，不编造原话。"
 license: MIT
 description: 将用户粘贴的亲子对话、家庭访谈、文本文件或可选 Get笔记记录，提炼为零到多张有证据定位的亲子话题卡；使用大模型生成风格一致的栅格插画，并输出可点击的离线 HTML 与可下载的正反面 PNG。适用于亲子话题卡提取、候选评审、批量制卡，以及经明确授权的 Get笔记或 Talkcard 草稿适配。
@@ -41,7 +41,7 @@ node <skill-dir>/scripts/render.mjs --input <candidate-set.json> --asset-root <a
 - Node.js 18 或更高版本；在 Skill 目录运行 `npm install` 只安装轻量的 `playwright-core`，不会自动下载 Chromium。
 - 渲染时优先复用本机已有的 Google Chrome、Microsoft Edge、Chromium 或 Brave。非标准安装位置可通过 `CHROME_PATH`、`EDGE_PATH` 或 `CHROMIUM_PATH` 指定。
 - 只有机器上完全没有 Chromium 内核浏览器，且 Playwright 缓存中也没有可用浏览器时，才需要运行 `npx playwright install chromium`。
-- 图片规范化需要 ImageMagick，macOS 也可使用系统自带的 `sips`；Get笔记命令仅在使用可选适配器时需要。
+- 图片规范化无需额外安装图片工具：默认复用渲染所用的同一个 Chromium 完成 870×660 封面裁切与 JPEG 导出；若本机已装 ImageMagick 或 macOS 自带 `sips`，会优先使用它们。Get笔记命令仅在使用可选适配器时需要。
 
 ## 证据与隐私
 
